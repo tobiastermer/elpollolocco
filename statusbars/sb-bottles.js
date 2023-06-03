@@ -1,4 +1,4 @@
-const statusbarBottles = new Statusbar(
+const statusbar1 = new Statusbar(
 
     IMAGES = [
         './img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png',
@@ -11,10 +11,14 @@ const statusbarBottles = new Statusbar(
 
     0, //percentage
 
+    5, // limit
+
     10, // x
     
     0, // y
 
-    true // isVisible
+    true, // isVisible
+
+    false // otherDirection
 
 );

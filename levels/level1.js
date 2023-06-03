@@ -53,6 +53,24 @@ const level1 = new Level(
         new Coin(),        
     ],
 
+    [
+        new ThrowableObject(350, 380, false, 0, 0),
+        new ThrowableObject(380, 380, false, 0, 0),
+        new ThrowableObject(410, 380, false, 0, 0),
+        new ThrowableObject(450, 380, false, 1, 0),
+        new ThrowableObject(480, 380, false, 1, 0),
+        new ThrowableObject(850, 380, false, 0, 0),
+        new ThrowableObject(880, 380, false, 0, 0),
+        new ThrowableObject(910, 380, false, 0, 0),
+        new ThrowableObject(950, 380, false, 1, 0),
+        new ThrowableObject(980, 380, false, 1, 0),
+        new ThrowableObject(1350, 380, false, 0, 0),
+        new ThrowableObject(1380, 380, false, 0, 0),
+        new ThrowableObject(1410, 380, false, 0, 0),
+        new ThrowableObject(1450, 380, false, 1, 0),
+        new ThrowableObject(1480, 380, false, 1, 0),
+    ],
+
     2900
 
 );

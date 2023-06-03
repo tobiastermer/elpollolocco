@@ -1,4 +1,4 @@
-const statusbarCoins = new Statusbar(
+const statusbar3 = new Statusbar(
 
     IMAGES = [
         './img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png',
@@ -11,10 +11,13 @@ const statusbarCoins = new Statusbar(
 
     0, //percentage
 
+    10, // limit
+    
     10, // x
     
     80, // y
 
-    true // isVisible
+    true, // isVisible
 
+    false // otherDirection
 );

@@ -1,14 +1,22 @@
 class DrawableObject {
 
-    x = 120;
-    y = 250;
-    height = 150;
-    width = 50;
+    x;
+    y;
+    offsetX;
+    offsetYtop;
+    offsetYbottom;
+    height;
+    width;
     img;
     imageCache = {};
     currentImage = 0;
     otherDirection = false;
 
+    isVisible = true;
+
+
+
+    
 
     loadImage(path) {
         this.img = new Image();
@@ -28,11 +36,11 @@ class DrawableObject {
     }
 
     drawRectangle(ctx) {
-        if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
+        if (this instanceof Character || this instanceof Chicken || this instanceof Endboss || this instanceof ThrowableObject || this instanceof Coin) {
             ctx.beginPath();
             ctx.lineWidth = "6";
             ctx.strokeStyle = "red";
-            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.rect(this.x + this.offsetX, this.y + this.offsetYtop, this.width - 2 * this.offsetX, this.height - this.offsetYtop - this.offsetYbottom);
             ctx.stroke();
         }
     }

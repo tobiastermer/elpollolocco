@@ -1,11 +1,10 @@
 class Character extends MovableObject {
 
-    x = 120;
-    y = 175;
-    height = 250;
-    width = 100;
-    speed = 10;
-
+    world;
+    walking_sound = new Audio('./audio/running.mp3');
+    collectedCoins = 0;
+    collectedBottles = 0;
+    
     IMAGES_WALKING = [
         './img/2_character_pepe/2_walk/W-21.png',
         './img/2_character_pepe/2_walk/W-22.png',
@@ -43,12 +42,18 @@ class Character extends MovableObject {
         './img/2_character_pepe/5_dead/D-57.png',
     ];
 
-
-    world;
-    walking_sound = new Audio('./audio/running.mp3');
-
     constructor() {
         super().loadImage('./img/2_character_pepe/2_walk/W-21.png');
+        this.x = 120;
+        this.y = 175;
+        this.height = 250;
+        this.width = 100;
+        this.offsetX = 20;
+        this.offsetYtop = 90;
+        this.offsetYbottom = 10;
+
+        this.speed = 10;
+        this.damageToOthers = 20;
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_HURT);
@@ -59,14 +64,11 @@ class Character extends MovableObject {
 
     animate() {
 
-
-
         setInterval(() => {
-
-
 
             this.walking_sound.pause();
 
+            // irgendwas mit !isDead ergänzen
 
             if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX) {
                 this.moveRight();
@@ -104,6 +106,5 @@ class Character extends MovableObject {
 
         }, 50)
     }
-
 
 }

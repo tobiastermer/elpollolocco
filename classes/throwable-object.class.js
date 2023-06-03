@@ -1,13 +1,11 @@
 class ThrowableObject extends MovableObject {
 
-    height = 80;
-    width = 80;
-    speed = 0;
+    isSplashed = false;
 
-    speedY = 15;
-
-    
-
+    IMAGES_ONGROUND = [
+        './img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
+        './img/6_salsa_bottle/2_salsa_bottle_on_ground.png',
+    ];
 
     IMAGES_ROTATING = [
         './img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
@@ -25,26 +23,43 @@ class ThrowableObject extends MovableObject {
         './img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
     ];
 
-    constructor(x, y, otherDirection) {
-        super().loadImage('./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
+    constructor(x, y, otherDirection, imgIndex, damageToOthers) {
+        super().loadImages(this.IMAGES_ONGROUND);
+        this.loadImage(this.IMAGES_ONGROUND[imgIndex]);
         this.x = x;
         this.y = y;
+        this.height = 80;
+        this.width = 80;
+        this.offsetX = 25;
+        this.offsetYtop = 15;
+        this.offsetYbottom = 10;
+        this.speed = 0;
+        this.speedY = 15;
+        this.damageToOthers = damageToOthers;
         this.otherDirection = otherDirection;
+        this.loadImages(this.IMAGES_ONGROUND);
         this.loadImages(this.IMAGES_ROTATING);
         this.loadImages(this.IMAGES_SPLASH);
-        this.throw();
+        if (this.damageToOthers > 0) {
+            this.throw();
+        }
     }
 
     throw() {
         this.applyGravity();
         setInterval(() => {
-            if (this.otherDirection) {
+            if (this.isSplashed) {
+                this.playAnimation(this.IMAGES_SPLASH);
+                this.damageToOthers = 0;
+            } else if (this.otherDirection) {
                 this.x -= 20;
+                this.playAnimation(this.IMAGES_ROTATING);
             } else {
                 this.x += 20;
+                this.playAnimation(this.IMAGES_ROTATING);
             }
+
         }, 1000 / 60);
     }
-
 
 }

@@ -5,11 +5,14 @@ class World {
     canvas;
     keyboard;
     camera_x = 0;
-    statusbars = [statusbarBottles, statusbarHealth, statusbarCoins, statusbarEndboss];
- 
 
-    throwableObjects = [];
+    statusbarBottles = statusbar1;
+    statusbarHealth = statusbar2;
+    statusbarCoins = statusbar3;
+    statusbarEndboss = statusbar4;
+    statusbarEndbossIcon = new FixedImage(650, 6, 63, 63, './img/7_statusbars/3_icons/icon_health_endboss.png', false);
 
+    thrownObjects = [];
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -17,7 +20,7 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.run();    
+        this.run();
     }
 
     setWorld() {
@@ -26,27 +29,65 @@ class World {
 
     run() {
         setInterval(() => {
-            this.checkCollisions();
             this.checkThrowableObjects();
+            this.checkEndbossVisibility();
         }, 200);
+        setInterval(() => {
+            this.checkCollisions();
+        }, 1000 / 60);
+    }
+
+    checkEndbossVisibility() {
+        if (this.level.enemies[this.level.enemies.length - 1].x - this.character.x < 550) {
+            this.statusbarEndboss.isVisible = true;
+            this.statusbarEndbossIcon.isVisible = true;
+        }
     }
 
     checkCollisions() {
 
+        this.checkCollectingCoinsBottles(this.level.coins, this.statusbarCoins, this.character.collectedCoins);
+        this.checkCollectingCoinsBottles(this.level.collectableThrowableObjects, this.statusbarBottles, this.character.collectedBottles);
+
         this.level.enemies.forEach(enemy => {
-            if (this.character.isColliding(enemy)) {
-                this.character.hit();
-                this.statusbars[1].setPercentage(this.character.energy);
+            if (this.character.isColliding(enemy) && !enemy.isDead()) {
+                if (this.character.isAboveGround() && this.character.isFallingDown()) {
+                    enemy.hit(this.character.damageToOthers)
+                } else {
+                    this.character.hit(enemy.damageToOthers);
+                    this.statusbarHealth.setPercentage(this.character.energy);
+                }
             };
         });
 
+        this.level.enemies.forEach(enemy => {
+            this.thrownObjects.forEach(thrownObject => {
+                if (thrownObject.isColliding(enemy)) {
+                    thrownObject.isSplashed = true;
+                    enemy.hit(thrownObject.damageToOthers);
+                    this.statusbarEndboss.setPercentage(enemy.energy);
+                };
+            });
+        });
+    }
 
+    checkCollectingCoinsBottles(arr, statusbar, collectedElements) {
+        arr.forEach(element => {
+            if (this.character.isColliding(element) && !element.isCollected && collectedElements < statusbar.limit) {
+                this.character.collect(element);
+                statusbar.setPercentage((collectedElements + 1) / statusbar.limit * 100);
+                element.isCollected = true;
+                element.isVisible = false;
+            };
+        });
     }
 
     checkThrowableObjects() {
-        if (this.keyboard.THROW) {
-            let bottle = new ThrowableObject(this.character.x + 10, this.character.y + 60, this.character.otherDirection);
-            this.throwableObjects.push(bottle);
+        if (this.keyboard.THROW && this.character.collectedBottles > 0) {
+            let bottle = new ThrowableObject(this.character.x + 10, this.character.y + 60, this.character.otherDirection, 0, 10);
+            this.thrownObjects.push(bottle);
+            this.character.collectedBottles -= 1;
+            this.statusbarBottles.setPercentage((this.character.collectedBottles) / this.statusbarBottles.limit * 100);
         }
     }
 
@@ -57,15 +98,21 @@ class World {
         this.addObjectsToCanvas(this.level.clouds);
 
         this.ctx.translate(-this.camera_x, 0); // Back
-        // space for fixed elements *************
-        this.addObjectsToCanvas(this.statusbars);
-
+        // begin space for fixed elements *************
+        this.addToMap(this.statusbarBottles);
+        this.addToMap(this.statusbarHealth);
+        this.addToMap(this.statusbarCoins);
+        this.addToMap(this.statusbarEndboss);
+        this.addToMap(this.statusbarEndbossIcon);
         this.ctx.translate(this.camera_x, 0); // Forwards
+        // end space for fixed elements *************
 
         this.addObjectsToCanvas(this.level.coins);
-        this.addObjectsToCanvas(this.throwableObjects);
         this.addObjectsToCanvas(this.level.enemies);
-        this.addObjectToCanvas(this.character);
+        this.addToMap(this.character);
+        this.addObjectsToCanvas(this.level.collectableThrowableObjects);
+        this.addObjectsToCanvas(this.thrownObjects);
+
         this.ctx.translate(-this.camera_x, 0);
 
 
@@ -77,20 +124,22 @@ class World {
 
     addObjectsToCanvas(objects) {
         objects.forEach(object => {
-            this.addObjectToCanvas(object);
+            this.addToMap(object);
         })
     }
 
-    addObjectToCanvas(mo) {
-        if (mo.otherDirection) {
-            this.flipImage(mo);
-        }
+    addToMap(mo) {
+        if (mo.isVisible) {
+            if (mo.otherDirection) {
+                this.flipImage(mo);
+            }
 
-        mo.draw(this.ctx);
-        mo.drawRectangle(this.ctx);
+            mo.draw(this.ctx);
+            mo.drawRectangle(this.ctx);
 
-        if (mo.otherDirection) {
-            this.flipImageBack(mo);
+            if (mo.otherDirection) {
+                this.flipImageBack(mo);
+            }
         }
     }
 

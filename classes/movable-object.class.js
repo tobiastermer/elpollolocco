@@ -1,10 +1,14 @@
 class MovableObject extends DrawableObject {
 
-
+    speed = 0;
     speedY = 0;
     acceleration = 1.2;
     energy = 100;
     lastHit = 0;
+    directionDown = false;
+    damageToOthers;
+    isCollected = false;
+    
 
     applyGravity() {
         setInterval(() => {
@@ -23,7 +27,13 @@ class MovableObject extends DrawableObject {
         }
     }
 
-
+    isFallingDown() {
+        if (this.speedY >= 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     playAnimation(images) {
         let i = this.currentImage % images.length;
@@ -46,20 +56,29 @@ class MovableObject extends DrawableObject {
     }
 
     isColliding(obj) {
-        return (this.x + this.width) >= obj.x &&
-            this.x <= (obj.x + obj.width) &&
-            (this.y + this.height) >= obj.y &&
-            (this.y) <= (obj.y + obj.height);
+        return (this.x + this.offsetX + this.width - 2 * this.offsetX) >= (obj.x + obj.offsetX) &&
+            (this.x + this.offsetX) <= (obj.x + obj.offsetX + obj.width - 2 * obj.offsetX) &&
+            (this.y + this.offsetYtop + this.height - this.offsetYtop - this.offsetYbottom) >= (obj.y + obj.offsetYtop) &&
+            (this.y + this.offsetYtop) <= (obj.y + obj.offsetYtop + obj.height - obj.offsetYtop - obj.offsetYbottom);
         // &&o bj.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
     }
 
-    hit() {
-        this.energy -= 5;
+    collect(obj) {
+        if (obj instanceof Coin) {
+            this.collectedCoins += 1;
+        } else if (obj instanceof ThrowableObject) {
+            this.collectedBottles += 1;
+        }
+    }
+
+    hit(damage) {
+        this.energy -= damage;
         if (this.energy < 0) {
             this.energy = 0;
         } else {
             this.lastHit = new Date().getTime();
         }
+        // console.log(this, ', Energy: ', this.energy);
     }
 
     isHurt() {
