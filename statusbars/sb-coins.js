@@ -15,7 +15,7 @@ const statusbar3 = new Statusbar(
     
     10, // x
     
-    80, // y
+    90, // y
 
     true, // isVisible
 

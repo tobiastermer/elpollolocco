@@ -4,7 +4,7 @@ class Character extends MovableObject {
     walking_sound = new Audio('./audio/running.mp3');
     collectedCoins = 0;
     collectedBottles = 0;
-    
+
     IMAGES_WALKING = [
         './img/2_character_pepe/2_walk/W-21.png',
         './img/2_character_pepe/2_walk/W-22.png',
@@ -38,8 +38,8 @@ class Character extends MovableObject {
         './img/2_character_pepe/5_dead/D-53.png',
         './img/2_character_pepe/5_dead/D-54.png',
         './img/2_character_pepe/5_dead/D-55.png',
-        './img/2_character_pepe/5_dead/D-56.png',
-        './img/2_character_pepe/5_dead/D-57.png',
+        // './img/2_character_pepe/5_dead/D-56.png',
+        // './img/2_character_pepe/5_dead/D-57.png',
     ];
 
     constructor() {
@@ -54,6 +54,7 @@ class Character extends MovableObject {
 
         this.speed = 10;
         this.damageToOthers = 20;
+        this.rotatedDeg = 0;
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_HURT);
@@ -70,33 +71,38 @@ class Character extends MovableObject {
 
             // irgendwas mit !isDead ergänzen
 
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX) {
-                this.moveRight();
-                this.otherDirection = false;
-                this.walking_sound.play();
-            }
-            if (this.world.keyboard.LEFT && this.x > 0) {
-                this.moveLeft();
-                this.otherDirection = true;
-                this.walking_sound.play();
-            }
+            if (this.isDead()) {
+                
+            } else {
+                if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX) {
+                    this.moveRight();
+                    this.otherDirection = false;
+                    this.walking_sound.play();
+                }
+                if (this.world.keyboard.LEFT && this.x > 0) {
+                    this.moveLeft();
+                    this.otherDirection = true;
+                    this.walking_sound.play();
+                }
 
-            if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-                this.jump();
+                if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+                    this.jump();
+                }
+
+
+                this.world.camera_x = -this.x + 120;
+                //this.world.level.statusbar.x = this.x -100;
             }
-
-
-            this.world.camera_x = -this.x + 120;
-            //this.world.level.statusbar.x = this.x -100;
 
         }, 1000 / 60)
 
         setInterval(() => {
 
-            if (this.isHurt()) {
+            if (this.isDead()) {
+                // this.playAnimation(this.IMAGES_DEAD);
+                this.playAnimationStopLastImg(this.IMAGES_DEAD);
+            } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
-            } else if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
             } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {

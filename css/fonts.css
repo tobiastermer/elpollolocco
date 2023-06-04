@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Zabars';
+    src: local('../fonts/Zabars'), local('Zabars'),
+        url('../fonts/Zabars.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Zabars.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

@@ -14,6 +14,10 @@ class World {
 
     thrownObjects = [];
 
+    startScreen = new BackgroundLayer('./img/9_intro_outro_screens/start/startscreen_2.png', 0);
+    endScreen = new BackgroundLayer('./img/9_intro_outro_screens/game_over/game over.png', 0);
+    
+
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -50,12 +54,16 @@ class World {
         this.checkCollectingCoinsBottles(this.level.collectableThrowableObjects, this.statusbarBottles, this.character.collectedBottles);
 
         this.level.enemies.forEach(enemy => {
-            if (this.character.isColliding(enemy) && !enemy.isDead()) {
-                if (this.character.isAboveGround() && this.character.isFallingDown()) {
+            if (this.character.isColliding(enemy) && !enemy.isDead() && !this.character.isDead()) {
+                if (this.character.isAboveGround() && this.character.isFallingDown() && enemy instanceof Chicken) {
                     enemy.hit(this.character.damageToOthers)
+                    
                 } else {
                     this.character.hit(enemy.damageToOthers);
                     this.statusbarHealth.setPercentage(this.character.energy);
+                    if (this.character.isDead()) {
+                        this.character.die();
+                    }
                 }
             };
         });
@@ -66,6 +74,9 @@ class World {
                     thrownObject.isSplashed = true;
                     enemy.hit(thrownObject.damageToOthers);
                     this.statusbarEndboss.setPercentage(enemy.energy);
+                    if (enemy instanceof Endboss && enemy.isDead()) {
+                        enemy.die();
+                    }
                 };
             });
         });
@@ -130,14 +141,18 @@ class World {
 
     addToMap(mo) {
         if (mo.isVisible) {
-            if (mo.otherDirection) {
+            if ((mo instanceof Character || mo instanceof Endboss) && mo.isDead()) {
+                this.rotateImage(mo);
+            } else if (mo.otherDirection) {
                 this.flipImage(mo);
             }
 
             mo.draw(this.ctx);
             mo.drawRectangle(this.ctx);
 
-            if (mo.otherDirection) {
+            if ((mo instanceof Character || mo instanceof Endboss) && mo.isDead()) {
+                this.rotateImageBack(mo);
+            } else if (mo.otherDirection) {
                 this.flipImageBack(mo);
             }
         }
@@ -154,4 +169,20 @@ class World {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
+
+    rotateImage(mo) {
+        if (mo.rotatedDeg >= 360) mo.rotatedDeg = 0;
+        mo.rotatedDeg += 2;
+        let imgPositionX = (mo.x + mo.offsetX + mo.width - 2 * mo.offsetX);
+        let imgPositionY = (mo.y + mo.offsetYtop / 2 + mo.height - mo.offsetYtop - mo.offsetYbottom);
+        this.ctx.save();
+        this.ctx.translate(imgPositionX, imgPositionY);
+        this.ctx.rotate(mo.rotatedDeg * Math.PI / 180);
+        this.ctx.translate(-imgPositionX, -imgPositionY);
+    }
+
+    rotateImageBack(mo) {
+        this.ctx.restore();
+    }
+
 }

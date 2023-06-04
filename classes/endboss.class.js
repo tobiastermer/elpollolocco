@@ -52,7 +52,8 @@ class Endboss extends MovableObject {
         this.offsetYbottom = 10;
         this.speed = 1 + Math.random() * 1;
         this.energy = 100;
-        this.damageToOthers = 20;
+        this.damageToOthers = 3;
+        this.rotatedDeg = 0;
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ATTACK);
@@ -64,16 +65,18 @@ class Endboss extends MovableObject {
     animate() {
 
         setInterval(() => {
-            if (!this.isDead()) {
+            if (this.isDead()) {
+                // this.x += 1;                
+            } else {
                 this.moveLeft(this.speed);
             }
         }, 1000 / 60);
 
         setInterval(() => {
-            if (this.isHurt()) {
+            if (this.isDead()) {
+                this.playAnimationStopLastImg(this.IMAGES_DEAD);
+            } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
-            } else if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
             } else {
                 this.playAnimation(this.IMAGES_WALKING);
             }

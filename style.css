@@ -1,9 +1,38 @@
 body {
+    margin: 0;
+    height: 100vh;
+    font-family: Zabars, Arial, Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    background-image: url(./img/5_background/desert.jpg);
+    background-repeat: no-repeat;
+    background-position: left bottom;
 }
 
 canvas {
     background-color: black;
+    border: 3px solid rgb(0, 0, 0);
+    border-radius: 32px;
+    height: 480px;
+    width: 720px;
+}
+
+h1 {
+    font-size: 72px;
+    letter-spacing: 4px;
+    text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+    height: 560px;
+    width: 860px;
+    padding: 8px;
+    background-image: url(./img/5_background/display.png);
+    background-size: contain;
+    background-position: center top;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
 }

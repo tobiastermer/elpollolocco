@@ -11,12 +11,10 @@ class DrawableObject {
     imageCache = {};
     currentImage = 0;
     otherDirection = false;
+    rotatedDeg = 0;
+
 
     isVisible = true;
-
-
-
-    
 
     loadImage(path) {
         this.img = new Image();
@@ -44,5 +42,7 @@ class DrawableObject {
             ctx.stroke();
         }
     }
+
+
 
 }
