@@ -6,10 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Pollo Locco</title>
-
+    <link rel="icon" type="image/x-icon" href="img\2_character_pepe\1_idle\idle\I-2.png">
     <link rel="stylesheet" href="./css/fonts.css">
     <link rel="stylesheet" href="style.css">
-
 
     <script src="classes/drawable-object.class.js"></script>
     <script src="classes/movable-object.class.js"></script>
@@ -23,6 +22,8 @@
 
     <script src="classes/character.class.js"></script>
     <script src="classes/chicken.class.js"></script>
+    <script src="classes/chicken-small.class.js"></script>
+    <script src="classes/chicken-big.class.js"></script>
     <script src="classes/endboss.class.js"></script>
     <script src="classes/cloud.class.js"></script>
     <script src="classes/coin.class.js"></script>
@@ -31,16 +32,60 @@
     <script src="classes/keyboard.class.js"></script>
     <script src="classes/level.class.js"></script>
     <script src="levels/level1.js"></script>
-
+    <script src="js/audio.js"></script>
     <script src="js/game.js"></script>
 </head>
 
-<body onload="init()">
+<body>
 
     <h1>El Pollo Loco</h1>
 
-    <div class="container">
+    <div class="content" id="content">
         <canvas width="720" height="480" id="canvas"></canvas>
+        <div class="image-layer" id="image-layer">
+            <img class="image-layer" src="./img/9_intro_outro_screens/start/startscreen_2.png" id="screen-start"
+                alt="Startscreen">
+            <img class="image-layer d-none" src="./img/9_intro_outro_screens/game_over/you lost.png" id="screen-loose"
+                alt="Loosescreen">
+            <img class="image-layer d-none" src="./img/9_intro_outro_screens/game_over/game over.png" id="screen-win"
+                alt="Winscreen">
+        </div>
+        <div class="button-layer">
+
+            <div class="btn-column btn-column-left">
+                <div class="btn-upperRow">
+                </div>
+                <div class="btn-lowerRow">
+                    <img onclick="startGame()" class="btn" src="./img/10_buttons/left.svg" alt="">
+                    <img onclick="startGame()" class="btn" src="./img/10_buttons/right.svg" alt="">
+                </div>
+            </div>
+            <div class="btn-column btn-column-mid">
+                <div class="btn-upperRow">
+                    <img onclick="startGame()" class="btn" src="./img/10_buttons/controller.svg" alt="">
+                    <img onclick="toggleMusic()" class="btn" id="btn-music" src="./img/10_buttons/soundon.svg" alt="">
+                    <img onclick="toggleFullscreen()" class="btn" src="./img/10_buttons/expand.svg" alt="">
+
+                </div>
+                <div class="btn-lowerRow">
+                    <img onclick="startGame()" class="btn" src="./img/10_buttons/restart.svg" alt="">
+                    <img onclick="pauseGame()" class="btn d-none" id="btn-pause" src="./img/10_buttons/pause.svg" alt="">
+                    <img onclick="resumeGame()" class="btn d-none" id="btn-play" src="./img/10_buttons/play.svg" alt="">
+
+                </div>
+            </div>
+            <div class="btn-column btn-column-rigth">
+                <div class="btn-upperRow">
+
+                </div>
+                <div class="btn-lowerRow">
+                    <img onclick="startGame()" class="btn" src="./img/10_buttons/up.svg" alt="">
+
+                </div>
+            </div>
+
+
+        </div>
     </div>
     <!-- <img src="./img/5_background/display.png" alt="" class="monitor"> -->
 

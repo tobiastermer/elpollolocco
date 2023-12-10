@@ -1,4 +1,4 @@
-class Chicken extends MovableObject {
+class BigChicken extends Chicken {
 
     IMAGES_WALKING = [
         './img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
@@ -9,6 +9,8 @@ class Chicken extends MovableObject {
     IMAGES_DEAD = [
         './img/3_enemies_chicken/chicken_normal/2_dead/dead.png',
     ];
+
+    isDeadAudioPlayed = false;
 
     constructor() {
         super().loadImage('./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
@@ -46,6 +48,10 @@ class Chicken extends MovableObject {
                     this.playAnimation(this.IMAGES_WALKING);
                 } else {
                     this.playAnimation(this.IMAGES_DEAD);
+                    if (!this.isDeadSoundPlayed) {
+                        playAudio("chickenHit")
+                        this.isDeadSoundPlayed = true;
+                    }
                 }
             }
             

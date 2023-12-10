@@ -64,21 +64,45 @@ class Endboss extends MovableObject {
 
     animate() {
 
+        // wird gebraucht, damit der Endboss nicht zu ruckartig seine Richtung verändert
         setInterval(() => {
-            if (this.isDead()) {
-                // this.x += 1;                
+            if (world.character.x > this.x) {
+                this.otherDirection = true;
             } else {
-                this.moveLeft(this.speed);
+                this.otherDirection = false;
             }
-        }, 1000 / 60);
+        }, 1500);
 
         setInterval(() => {
-            if (this.isDead()) {
-                this.playAnimationStopLastImg(this.IMAGES_DEAD);
-            } else if (this.isHurt()) {
-                this.playAnimation(this.IMAGES_HURT);
-            } else {
-                this.playAnimation(this.IMAGES_WALKING);
+            if (!gameIsPaused) {
+                if (this.isDead()) {
+                    // this.x += 1;                
+                } else if (this.otherDirection) {
+                    this.moveRight(this.speed);
+                } else {
+                    this.moveLeft(this.speed);
+                }
+            }
+        }, 1000 / 30);
+
+        setInterval(() => {
+            if (!gameIsPaused) {
+                if (this.isDead()) {
+                    this.playAnimationStopLastImg(this.IMAGES_DEAD);
+                    playAudio("endbossDies");
+                    playAudio("gameWon");
+                } else if (this.isHurt()) {
+                    this.playAnimation(this.IMAGES_HURT);
+                    playAudio("endbossHurt");
+                } else if (this.isAttacking()) {
+                    this.playAnimation(this.IMAGES_ATTACK);
+                    playAudio("endbossAttack");
+                } else if (this.isNearToCharacter()) {
+                    this.playAnimation(this.IMAGES_ALERT);
+                    playAudio("endbossAlert");
+                } else {
+                    this.playAnimation(this.IMAGES_WALKING);
+                }
             }
         }, 50)
     }

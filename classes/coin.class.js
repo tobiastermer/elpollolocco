@@ -5,6 +5,8 @@ class Coin extends MovableObject {
         './img/8_coin/coin_2.png',
     ];
 
+    soundCollected = 'collectCoin';
+
     constructor() {
         super().loadImage('./img/8_coin/coin_1.png');
         this.x = 200 + Math.random() * 1500;
@@ -24,7 +26,9 @@ class Coin extends MovableObject {
         this.moveLeft(this.speed);
 
         setInterval(() => {
-            this.playAnimation(this.IMAGES_WALKING);
+            if (!gameIsPaused) {
+                this.playAnimation(this.IMAGES_WALKING);
+            }
         }, 100)
     }
 

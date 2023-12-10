@@ -23,6 +23,11 @@ class ThrowableObject extends MovableObject {
         './img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
     ];
 
+    isThrownAudioPlayed = false;
+    isSplashedAudioPlayed = false;
+    soundCollected = 'bottleCollect';
+
+
     constructor(x, y, otherDirection, imgIndex, damageToOthers) {
         super().loadImages(this.IMAGES_ONGROUND);
         this.loadImage(this.IMAGES_ONGROUND[imgIndex]);
@@ -48,18 +53,32 @@ class ThrowableObject extends MovableObject {
     throw() {
         this.applyGravity();
         setInterval(() => {
-            if (this.isSplashed) {
-                this.playAnimation(this.IMAGES_SPLASH);
-                this.damageToOthers = 0;
-            } else if (this.otherDirection) {
-                this.x -= 20;
-                this.playAnimation(this.IMAGES_ROTATING);
-            } else {
-                this.x += 20;
-                this.playAnimation(this.IMAGES_ROTATING);
-            }
+            if (!gameIsPaused) {
 
-        }, 1000 / 60);
+                if (this.isSplashed) {
+                    this.playAnimation(this.IMAGES_SPLASH);
+                    this.damageToOthers = 0;
+                    if (!this.isSplashedSoundPlayed) {
+                        playAudioMultiple("bottleSplash");
+                        this.isSplashedSoundPlayed = true;
+                    }
+                } else if (this.otherDirection) {
+                    this.x -= 20;
+                    this.playAnimation(this.IMAGES_ROTATING);
+                    if (!this.isThrownSoundPlayed) {
+                        playAudioMultiple("bottleThrow");
+                        this.isThrownSoundPlayed = true;
+                    }
+                } else {
+                    this.x += 20;
+                    this.playAnimation(this.IMAGES_ROTATING);
+                    if (!this.isThrownSoundPlayed) {
+                        playAudioMultiple("bottleThrow");
+                        this.isThrownSoundPlayed = true;
+                    }
+                }
+            }
+        }, 1000 / 30);
     }
 
 }

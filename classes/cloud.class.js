@@ -13,7 +13,13 @@ class Cloud extends MovableObject {
     }
 
     animate() {
-        this.moveLeft(this.speed);
+        setInterval(() => {
+
+            if (!gameIsPaused) {
+                this.moveLeft(this.speed);
+            }
+
+        }, 1000 / 30);
     }
 
 }

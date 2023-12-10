@@ -1,17 +1,19 @@
-class Chicken extends MovableObject {
+class SmallChicken extends Chicken {
 
     IMAGES_WALKING = [
-        './img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
-        './img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
-        './img/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
+        './img/3_enemies_chicken/chicken_small/1_walk/1_w.png',
+        './img/3_enemies_chicken/chicken_small/1_walk/2_w.png',
+        './img/3_enemies_chicken/chicken_small/1_walk/3_w.png',
     ];
 
     IMAGES_DEAD = [
-        './img/3_enemies_chicken/chicken_normal/2_dead/dead.png',
+        './img/3_enemies_chicken/chicken_small/2_dead/dead.png',
     ];
 
+    isDeadAudioPlayed = false;
+
     constructor() {
-        super().loadImage('./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
+        super().loadImage('./img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
         this.x = 500 + Math.random() * 2500;
         this.y = 340;
         this.height = 80;
@@ -46,6 +48,10 @@ class Chicken extends MovableObject {
                     this.playAnimation(this.IMAGES_WALKING);
                 } else {
                     this.playAnimation(this.IMAGES_DEAD);
+                    if (!this.isDeadSoundPlayed) {
+                        playAudio("smallChickenHit")
+                        this.isDeadSoundPlayed = true;
+                    }
                 }
             }
             

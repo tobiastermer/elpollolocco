@@ -6,24 +6,17 @@ class World {
     keyboard;
     camera_x = 0;
 
-    statusbarBottles = statusbar1;
-    statusbarHealth = statusbar2;
-    statusbarCoins = statusbar3;
-    statusbarEndboss = statusbar4;
-    statusbarEndbossIcon = new FixedImage(650, 6, 63, 63, './img/7_statusbars/3_icons/icon_health_endboss.png', false);
+    gameOver = false;
 
     thrownObjects = [];
-
-    startScreen = new BackgroundLayer('./img/9_intro_outro_screens/start/startscreen_2.png', 0);
-    endScreen = new BackgroundLayer('./img/9_intro_outro_screens/game_over/game over.png', 0);
-    
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.draw();
         this.setWorld();
+        this.setStatusbars();
+        this.draw();
         this.run();
     }
 
@@ -31,21 +24,35 @@ class World {
         this.character.world = this;
     }
 
+    setStatusbars() {
+        this.statusbarBottles = statusbar1;
+        this.statusbarHealth = statusbar2;
+        this.statusbarCoins = statusbar3;
+        this.statusbarEndboss = statusbar4;
+        this.statusbarEndbossIcon = new FixedImage(650, 6, 63, 63, './img/7_statusbars/3_icons/icon_health_endboss.png', false);
+    }
+
     run() {
         setInterval(() => {
-            this.checkThrowableObjects();
-            this.checkEndbossVisibility();
+            if (!gameIsPaused) {
+                this.checkThrowableObjects();
+                this.checkEndbossVisibility();
+            }
         }, 200);
         setInterval(() => {
-            this.checkCollisions();
-        }, 1000 / 60);
+            if (!gameIsPaused) {
+                this.checkCollisions();
+            }
+        }, 1000 / 30);
     }
 
     checkEndbossVisibility() {
+        // if (this.level.fixedObjects['statusbarEndbossIcon'].isVisible == false) {
         if (this.level.enemies[this.level.enemies.length - 1].x - this.character.x < 550) {
             this.statusbarEndboss.isVisible = true;
             this.statusbarEndbossIcon.isVisible = true;
         }
+        // }
     }
 
     checkCollisions() {
@@ -57,12 +64,15 @@ class World {
             if (this.character.isColliding(enemy) && !enemy.isDead() && !this.character.isDead()) {
                 if (this.character.isAboveGround() && this.character.isFallingDown() && enemy instanceof Chicken) {
                     enemy.hit(this.character.damageToOthers)
-                    
+
                 } else {
                     this.character.hit(enemy.damageToOthers);
                     this.statusbarHealth.setPercentage(this.character.energy);
+                    enemy.attack();
                     if (this.character.isDead()) {
                         this.character.die();
+                        this.gameOver = true;
+                        lostGame();
                     }
                 }
             };
@@ -76,6 +86,7 @@ class World {
                     this.statusbarEndboss.setPercentage(enemy.energy);
                     if (enemy instanceof Endboss && enemy.isDead()) {
                         enemy.die();
+                        wonGame();
                     }
                 };
             });
@@ -89,6 +100,7 @@ class World {
                 statusbar.setPercentage((collectedElements + 1) / statusbar.limit * 100);
                 element.isCollected = true;
                 element.isVisible = false;
+                playAudioMultiple(element.soundCollected);
             };
         });
     }
@@ -103,6 +115,7 @@ class World {
     }
 
     draw() {
+        this.updateCamera();
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToCanvas(this.level.backgroundLayers);
@@ -124,8 +137,9 @@ class World {
         this.addObjectsToCanvas(this.level.collectableThrowableObjects);
         this.addObjectsToCanvas(this.thrownObjects);
 
-        this.ctx.translate(-this.camera_x, 0);
 
+
+        this.ctx.translate(-this.camera_x, 0);
 
         let self = this;
         requestAnimationFrame(function () {
@@ -148,7 +162,7 @@ class World {
             }
 
             mo.draw(this.ctx);
-            mo.drawRectangle(this.ctx);
+            //mo.drawRectangle(this.ctx);
 
             if ((mo instanceof Character || mo instanceof Endboss) && mo.isDead()) {
                 this.rotateImageBack(mo);
@@ -184,5 +198,27 @@ class World {
     rotateImageBack(mo) {
         this.ctx.restore();
     }
+
+    updateCamera() {
+        // const middleOfScreen = this.canvas.width / 2;
+        // const cameraFocusMargin = 100; // Wie weit der Charakter vom Mittelpunkt entfernt sein kann
+
+        // let cameraFocusPoint = this.camera_x + middleOfScreen; // Der Punkt, auf den die Kamera fokussiert
+
+        // // Berechnen der neuen Kameraposition basierend auf der Charakterposition und -richtung
+        // if (this.character.otherDirection) { // Charakter bewegt sich nach links
+        //     if (this.character.x < cameraFocusPoint - cameraFocusMargin) {
+        //         this.camera_x = Math.max(0, this.character.x - (middleOfScreen - cameraFocusMargin));
+        //     }
+        // } else { // Charakter bewegt sich nach rechts
+        //     if (this.character.x + this.character.width > cameraFocusPoint + cameraFocusMargin) {
+        //         this.camera_x = Math.min(this.character.x - (middleOfScreen - cameraFocusMargin), this.level.levelEndX - this.canvas.width);
+        //     }
+        // }
+
+        this.camera_x = -this.character.x + 120;
+
+    }
+
 
 }

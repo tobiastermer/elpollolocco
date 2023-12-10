@@ -4,20 +4,22 @@ class MovableObject extends DrawableObject {
     speedY = 0;
     acceleration = 1.2;
     energy = 100;
+    lastAttack = 0;
     lastHit = 0;
     lastDead = 0;
     directionDown = false;
     damageToOthers;
     isCollected = false;
 
-
     applyGravity() {
         setInterval(() => {
-            if (this.isAboveGround() || this.speedY > 0) {
-                this.y = this.y -= this.speedY;
-                this.speedY -= this.acceleration;
+            if (!gameIsPaused) {
+                if (this.isAboveGround() || this.speedY > 0) {
+                    this.y = this.y -= this.speedY;
+                    this.speedY -= this.acceleration;
+                }
             }
-        }, 1000 / 60);
+        }, 1000 / 30);
     }
 
     isAboveGround() {
@@ -94,6 +96,10 @@ class MovableObject extends DrawableObject {
         }
     }
 
+    attack() {
+        this.lastAttack = new Date().getTime();
+    }
+
     isHurt() {
         let timePassed = new Date().getTime() - this.lastHit; // time since last Hit in milliseconds
         return timePassed < 1000;
@@ -103,6 +109,15 @@ class MovableObject extends DrawableObject {
         // let timePassed = new Date().getTime() - this.lastDead; // time since last Hit in milliseconds
         // return timePassed < 1000
         return this.energy == 0;
+    }
+
+    isAttacking() {
+        let timePassed = new Date().getTime() - this.lastAttack; // time since last Hit in milliseconds
+        return timePassed < 1000;
+    }
+
+    isNearToCharacter() {
+        return (!this.otherDirection && this.x - world.character.x < 300) || (this.otherDirection && world.character.x - this.x < 300);
     }
 
     die() {

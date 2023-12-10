@@ -1,3 +1,14 @@
+ /* Hide scrollbar for Chrome, Safari and Opera */
+ body::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  } 
+
 body {
     margin: 0;
     height: 100vh;
@@ -9,6 +20,7 @@ body {
     background-image: url(./img/5_background/desert.jpg);
     background-repeat: no-repeat;
     background-position: left bottom;
+    overflow-x: hidden;
 }
 
 canvas {
@@ -17,6 +29,8 @@ canvas {
     border-radius: 32px;
     height: 480px;
     width: 720px;
+    display: block;
+    object-fit: contain; /* Hält das Bildverhältnis bei Skalierung bei */
 }
 
 h1 {
@@ -25,7 +39,7 @@ h1 {
     text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.5);
 }
 
-.container {
+.content {
     height: 560px;
     width: 860px;
     padding: 8px;
@@ -35,4 +49,106 @@ h1 {
     background-repeat: no-repeat;
     display: flex;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
+
+}
+
+.image-layer,
+.button-layer {
+    background-color: transparent;
+    border: 3px solid rgb(0, 0, 0);
+    border-radius: 32px;
+    height: 480px;
+
+    width: 720px;
+    position: absolute;
+}
+
+.image-layer {
+    background-color: black;
+}
+
+.button-layer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.btn-column {
+    height: calc(100% - 20px);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+
+}
+
+.btn-upperRow, .btn-lowerRow {
+    height: 8%;
+}
+
+
+.btn {
+    height: 100%;
+    width: fit-content;
+    border-radius: 50%;
+    background-color: rgb(255, 204, 24);
+    padding: 8px;
+    margin: 2px;
+    transition: all 225ms ease-in-out;
+    border: 1px solid black;
+
+}
+
+.btn:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    background-color: rgb(73, 202, 238);
+}
+
+.d-none {
+    display: none;
+}
+
+/* Smartphones */
+@media only screen and (max-width: 720px) {
+    canvas {
+        /* width: calc(100% - 140px); */
+        width: 100%;
+        height: unset;
+    }
+
+    .content {
+        width: 100%;
+        height: unset;
+        background-image: none;
+    }
+
+    .button-layer {
+        height: 100%;
+        width: 98%;
+        border: 0;
+    }
+
+    .btn-column {
+        height: calc(100% - 24px);
+        padding-bottom: 20px;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
+
+    .content {
+        height: 100vh;
+    }
+
+    .button-layer {
+        height: 100%;
+    }
 }

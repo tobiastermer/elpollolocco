@@ -52,10 +52,8 @@ class Statusbar extends DrawableObject {
     animate() {
 
         setInterval(() => {
-
             //this.x = this.world.character.x - 100;
-
-        }, 1000 / 60)
+        }, 1000 / 30)
 
     }
 
