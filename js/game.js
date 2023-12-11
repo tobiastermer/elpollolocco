@@ -11,11 +11,14 @@ function startGame() {
   initLevel1();
   canvas = document.getElementById('canvas');
   world = new World(canvas, keyboard);
-  hideGameOverlay('screen-start');
-  // turnOnEndbossStatusbarVisibility(false);
-
+  hideElement('screen-start');
+  hideElement('screen-loose');
+  hideElement('screen-win');
+  hideElement('btn-start');
+  showElement('canvas');
+  showElement('btn-gameoverlay');
+  showElement('btn-pause');
   gameIsPaused = false;
-  document.getElementById('btn-pause').classList.remove('d-none');
   initBackgroundMusic();
 }
 
@@ -58,14 +61,22 @@ function lostGame() {
 function finishGame() {
 
   setTimeout(() => {
+    pauseGame();
     if (gameIsWon) {
-      showGameOverlay('screen-win');
+      showElement('screen-win');
     } else {
-      showGameOverlay('screen-loose');
+      showElement('screen-loose');
     }
     document.getElementById('btn-pause').classList.add('d-none');
     gameIsPaused = true;
-  }, 2500);
+
+    // showElement('screen-start');
+    showElement('btn-start');
+    // hideElement('canvas');
+    hideElement('btn-gameoverlay');
+    hideElement('btn-pause');
+
+  }, 1500);
 
 }
 
@@ -73,13 +84,13 @@ function clearAllIntervals() {
   for (let i = 1; i < 9999; i++) window.clearInterval(i);
 }
 
-function showGameOverlay(element) {
-  document.getElementById('image-layer').classList.remove('d-none');
+function showElement(element) {
+  // document.getElementById('image-layer').classList.remove('d-none');
   document.getElementById(element).classList.remove('d-none');
 }
 
-function hideGameOverlay(element) {
-  document.getElementById('image-layer').classList.add('d-none');
+function hideElement(element) {
+  // document.getElementById('image-layer').classList.add('d-none');
   document.getElementById(element).classList.add('d-none');
 }
 function toggleFullscreen() {

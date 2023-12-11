@@ -115,32 +115,33 @@ class World {
     }
 
     draw() {
-        this.updateCamera();
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToCanvas(this.level.backgroundLayers);
-        this.addObjectsToCanvas(this.level.clouds);
+        if (!gameIsPaused) {
 
-        this.ctx.translate(-this.camera_x, 0); // Back
-        // begin space for fixed elements *************
-        this.addToMap(this.statusbarBottles);
-        this.addToMap(this.statusbarHealth);
-        this.addToMap(this.statusbarCoins);
-        this.addToMap(this.statusbarEndboss);
-        this.addToMap(this.statusbarEndbossIcon);
-        this.ctx.translate(this.camera_x, 0); // Forwards
-        // end space for fixed elements *************
+            this.updateCamera();
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.translate(this.camera_x, 0);
+            this.addObjectsToCanvas(this.level.backgroundLayers);
+            this.addObjectsToCanvas(this.level.clouds);
 
-        this.addObjectsToCanvas(this.level.coins);
-        this.addObjectsToCanvas(this.level.enemies);
-        this.addToMap(this.character);
-        this.addObjectsToCanvas(this.level.collectableThrowableObjects);
-        this.addObjectsToCanvas(this.thrownObjects);
+            this.ctx.translate(-this.camera_x, 0); // Back
+            // begin space for fixed elements *************
+            this.addToMap(this.statusbarBottles);
+            this.addToMap(this.statusbarHealth);
+            this.addToMap(this.statusbarCoins);
+            this.addToMap(this.statusbarEndboss);
+            this.addToMap(this.statusbarEndbossIcon);
+            this.ctx.translate(this.camera_x, 0); // Forwards
+            // end space for fixed elements *************
 
+            this.addObjectsToCanvas(this.level.coins);
+            this.addObjectsToCanvas(this.level.enemies);
+            this.addToMap(this.character);
+            this.addObjectsToCanvas(this.level.collectableThrowableObjects);
+            this.addObjectsToCanvas(this.thrownObjects);
 
-
-        this.ctx.translate(-this.camera_x, 0);
-
+            this.ctx.translate(-this.camera_x, 0);
+        }
+        
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
