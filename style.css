@@ -25,11 +25,11 @@
 
  canvas {
      background-color: black;
-     border-radius: 32px;
+     border-radius: 16px;
      height: 480px;
      width: 720px;
      /* display: none; */
-     object-fit: contain;
+     /* object-fit: contain; */
      /* Hält das Bildverhältnis bei Skalierung bei */
  }
 
@@ -53,7 +53,7 @@
 
      display: flex;
      justify-content: center;
-    
+
 
      overflow: hidden;
 
@@ -73,35 +73,106 @@
  }
 
  #rotate-device-container {
-    z-index: 30;
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100vw;
-    height: 100vh;
-    flex-direction: column;
-    align-items: center;
-    z-index: 50;
-    background: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(6px);
+     z-index: 30;
+     display: none;
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     width: 100vw;
+     height: 100vh;
+     flex-direction: column;
+     align-items: center;
+     z-index: 50;
+     background: rgba(255, 255, 255, 0.3);
+     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+     backdrop-filter: blur(6px);
  }
 
  #rotate-device-container img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    height: 80%;
-    background-color: transparent;
-    border-radius: 20px;
-    color: white;
-    flex-direction: column;
-    align-items: center;
-    z-index: 50;
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     width: 90%;
+     height: 80%;
+     background-color: transparent;
+     border-radius: 20px;
+     color: white;
+     flex-direction: column;
+     align-items: center;
+     z-index: 50;
+ }
+
+ #gamecontrols-container {
+     position: absolute;
+     z-index: 60;
+     border-radius: 16px;
+     top: 5%;
+     left: 5%;
+     height: 90%;
+     width: 90%;
+     background-color: rgba(238, 238, 238, 0.5);
+     background-image: url(img/9_intro_outro_screens/gamecontrols.jpg);
+     background-position: center;
+     background-size: cover;
+     box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px, rgba(0, 0, 0, .14) 0 6px 10px 0, rgba(0, 0, 0, .12) 0 1px 18px 0;
+
+ }
+
+ .gamecontrollsContent {
+     height: 100%;
+     display: flex;
+     flex-direction: column;
+     align-items: flex-start;
+     justify-content: center;
+     padding-left: 20px;
+
+ }
+
+ #btn-closeGamecontrols {
+     position: absolute;
+     top: 18px;
+     right: 18px;
+     height: 24px;
+     width: 24px;
+ }
+
+ #btn-closeGamecontrols:hover {
+     cursor: pointer;
+ }
+
+ .control-item {
+     display: flex;
+     align-items: center;
+ }
+
+ .control-icon {
+     width: 72px;
+     /* Anpassen nach Bedarf */
+     height: auto;
+     margin-right: 10px;
+     animation: icon-animation 1.5s infinite;
+ }
+
+ @keyframes icon-animation {
+
+     0%,
+     100% {
+         transform: translateY(0);
+     }
+
+     50% {
+         transform: translateY(-8px);
+     }
+ }
+
+ .control-item p {
+     margin: 0;
+     font-size: 24px;
+     /* Anpassen nach Bedarf */
+     color: #000;
+     /* Anpassen nach Bedarf */
  }
 
  .button-layer {
@@ -111,23 +182,25 @@
  }
 
  #btn-menuoverlay {
-    /* left: 50%; */
-    display: flex;
-    justify-content: center;
+     /* left: 50%; */
+     display: flex;
+     justify-content: center;
  }
 
  button {
-
-    background-color: transparent;
-    border: none;
-    color: white;
-    font-size: 40px;
-    font-family: 'Zabars', sans-serif;
-    padding: 16px 24px 16px 24px !important;
-    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.8);
-    cursor: pointer;
-    transition: 0.1s all ease-in-out;
-    height: unset !important;
+     background-color: transparent;
+     border: none;
+     color: black;
+     font-size: 2.5rem;
+     font-family: 'Zabars', sans-serif;
+     padding: 12px 20px 12px 20px !important;
+     text-shadow: 0px 3px 4px rgba(0, 0, 0, 0.4);
+     cursor: pointer;
+     transition: 0.1s all ease-in-out;
+     height: unset !important;
+     min-height: 125%;
+     border-radius: 8px !important;
+     margin-top: 16% !important;
  }
 
  .btn-column {
@@ -138,14 +211,12 @@
      justify-content: space-between;
      align-items: center;
      box-sizing: border-box;
-
  }
 
  .btn-upperRow,
  .btn-lowerRow {
      height: 8%;
  }
-
 
  .btn {
      height: 100%;
@@ -156,6 +227,7 @@
      margin: 2px;
      transition: all 225ms ease-in-out;
      border: 1px solid black;
+     box-shadow: 0 10px 6px -6px #777;
 
  }
 
@@ -163,6 +235,7 @@
      cursor: pointer;
      transform: scale(1.1);
      background-color: rgb(73, 202, 238);
+     box-shadow: 0 10px 6px -6px #000;
  }
 
  .d-none {
@@ -199,22 +272,22 @@
      /* } */
  }
 
- @media only screen and (max-width: 720px) and (min-height: 600px){
+ @media only screen and (max-width: 720px) and (min-height: 600px) {
 
-    #rotate-device-container {
-       display: block;
-    }
-}
+     #rotate-device-container {
+         display: block;
+     }
+ }
 
  @media only screen and (max-height: 750px) {
-    .mobile-hidden {
-        display: none;
-    }
+     .mobile-hidden {
+         display: none;
+     }
 
-    .mobile-visible {
-        display: block;
-    }
-}
+     .mobile-visible {
+         display: block;
+     }
+ }
 
  @media only screen and (max-height: 480px) {
      canvas {
@@ -230,7 +303,7 @@
      }
 
      .image-layer {
-        border-radius: 0;
+         border-radius: 0;
      }
 
      .button-layer {

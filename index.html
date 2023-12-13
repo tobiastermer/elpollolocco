@@ -45,55 +45,83 @@
             alt="Loosescreen">
         <img class="image-layer d-none" src="./img/9_intro_outro_screens/game_over/game over.png" id="screen-win"
             alt="Winscreen">
-        <div class="button-layer" id="btn-menuoverlay">
+        <!-- <div class="button-layer" id="btn-menuoverlay">
             <div class="btn-column btn-column-mid">
                 <div class="btn-upperRow">
-                    <button onclick="startGame()" class="btn" id="btn-start">Start Game</button>
+
                 </div>
             </div>
-        </div>
-        <div class="button-layer d-none" id="btn-gameoverlay">
-            <div class="btn-column btn-column-left">
-                <div class="btn-upperRow">
+        </div> -->
+        <div class="button-layer" id="btn-gameoverlay">
+            <div class="btn-column btn-column-left" id="btn-column-1">
+                <div class="btn-upperRow" id="btn-column-1-1">
                 </div>
-                <div class="btn-lowerRow">
+                <div class="btn-lowerRow d-none" id="btn-column-1-2">
                     <img onclick="startGame()" class="btn" src="./img/10_buttons/left.svg" alt="">
                     <img onclick="startGame()" class="btn" src="./img/10_buttons/right.svg" alt="">
                 </div>
             </div>
-            <div class="btn-column btn-column-mid">
-                <div class="btn-upperRow">
-                    <img onclick="startGame()" class="btn" src="./img/10_buttons/controller.svg" alt="">
-                    <img onclick="toggleMusic()" class="btn" id="btn-music" src="./img/10_buttons/soundon.svg" alt="">
-                    <img onclick="toggleFullscreen()" class="btn" src="./img/10_buttons/expand.svg" alt="">
+            <div class="btn-column btn-column-mid" id="btn-column-2">
+                <div class="btn-upperRow" id="btn-column-2-1">
+                    <button onclick="startGame()" class="btn" id="btn-start">Start Game</button>
 
                 </div>
-                <div class="btn-lowerRow">
-                    <img onclick="startGame()" class="btn" src="./img/10_buttons/restart.svg" alt="">
+                <div class="btn-lowerRow" id="btn-column-2-2">
+                    <img onclick="startGame()" class="btn d-none" src="./img/10_buttons/restart.svg" id="btn-restart"
+                        alt="">
+                    <img onclick="toggleGamecontrols()" class="btn" src="./img/10_buttons/controller.svg" alt="">
+                    <img onclick="toggleMusic()" class="btn" id="btn-music" src="./img/10_buttons/soundon.svg" alt="">
+                    <img onclick="toggleFullscreen()" class="btn" src="./img/10_buttons/expand.svg" alt="">
+                </div>
+
+
+
+            </div>
+            <div class="btn-column btn-column-rigth" id="btn-column-3">
+                <div class="btn-upperRow" id="btn-column-3-1">
+
+                </div>
+                <div class="btn-lowerRow d-none" id="btn-column-3-2">
                     <img onclick="pauseGame()" class="btn d-none" id="btn-pause" src="./img/10_buttons/pause.svg"
                         alt="">
                     <img onclick="resumeGame()" class="btn d-none" id="btn-play" src="./img/10_buttons/play.svg" alt="">
-                </div>
-            </div>
-            <div class="btn-column btn-column-rigth">
-                <div class="btn-upperRow">
-
-                </div>
-                <div class="btn-lowerRow">
                     <img onclick="startGame()" class="btn" src="./img/10_buttons/up.svg" alt="">
-
                 </div>
             </div>
 
 
         </div>
         <canvas width="720" height="480" id="canvas" class="d-none"></canvas>
+        <div id="gamecontrols-container" class="d-none">
+            <img src="img/10_buttons/close.svg" onclick="toggleGamecontrols(); return false" alt=""
+                id="btn-closeGamecontrols">
+            <div class="gamecontrollsContent">
+                <div class="control-item">
+                    <img src="img/10_buttons/key-left.svg" alt="Move left" class="control-icon">
+                    <p>Move left</p>
+                </div>
+                <div class="control-item">
+                    <img src="img/10_buttons/key-right.svg" alt="Move right" class="control-icon">
+                    <p>Move right</p>
+                </div>
+                <div class="control-item">
+                    <img src="img/10_buttons/key-space.svg" alt="Jump" class="control-icon">
+                    <p>Jump</p>
+                </div>
+                <div class="control-item">
+                    <img src="img/10_buttons/key-d.svg" alt="Throw Molotov-Cocktail" class="control-icon">
+                    <p>Throw Molotov-Cocktail</p>
+                </div>
+            </div>
+        </div>
     </div>
+
     <div id="rotate-device-container">
         <img class="image-layer" src="./img/9_intro_outro_screens/rotatescreen.png" id="screen-rotateDevice"
-        alt="Rotatescreen">
+            alt="Rotatescreen">
     </div>
-    
+
+
     <!-- <img src="./img/5_background/display.png" alt="" class="monitor"> -->
 
 </body>

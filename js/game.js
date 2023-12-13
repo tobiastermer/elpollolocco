@@ -16,20 +16,26 @@ function startGame() {
   hideElement('screen-win');
   hideElement('btn-start');
   showElement('canvas');
-  showElement('btn-gameoverlay');
   showElement('btn-pause');
+  hideElement('btn-play');
+  showElement('btn-column-1-2');
+  hideElement('btn-column-2-1');
+  showElement('btn-column-3-2');
+  showElement('btn-restart');
   gameIsPaused = false;
   initBackgroundMusic();
 }
 
 function pauseGame() {
   gameIsPaused = true;
-  togglePlayPauseButton();
+  showElement('btn-play');
+  hideElement('btn-pause');
 }
 
 function resumeGame() {
   gameIsPaused = false;
-  togglePlayPauseButton();
+  hideElement('btn-play');
+  showElement('btn-pause');
 }
 
 /**
@@ -38,14 +44,9 @@ function resumeGame() {
 function initBackgroundMusic() {
   const backgroundAudio = audios.find((a) => a.audioName === "backgroundMusic");
   if (backgroundAudio) {
-      playAudio("backgroundMusic");
-      backgroundAudio.isPlaying = true;
+    playAudio("backgroundMusic");
+    backgroundAudio.isPlaying = true;
   }
-}
-
-function togglePlayPauseButton() {
-  document.getElementById('btn-play').classList.toggle('d-none');
-  document.getElementById('btn-pause').classList.toggle('d-none');
 }
 
 function wonGame() {
@@ -73,8 +74,11 @@ function finishGame() {
     // showElement('screen-start');
     showElement('btn-start');
     // hideElement('canvas');
-    hideElement('btn-gameoverlay');
     hideElement('btn-pause');
+    hideElement('btn-column-1-2');
+    showElement('btn-column-2-1');
+    hideElement('btn-column-3-2');
+    hideElement('btn-restart');
 
   }, 1500);
 
@@ -127,22 +131,25 @@ function exitFullscreen() {
 
 function resizeCanvas() {
   let canvas = document.getElementById('canvas');
+  let content = document.getElementById('content');
   if (document.fullscreenElement || document.webkitFullscreenElement) {
     // Im Vollbildmodus
-    let aspectRatio = 16 / 9;
-    let newWidth = window.innerWidth;
-    let newHeight = newWidth / aspectRatio;
-    if (newHeight > window.innerHeight) {
-      newHeight = window.innerHeight;
-      newWidth = newHeight * aspectRatio;
-    }
-    canvas.style.width = `${newWidth}px`;
-    canvas.style.height = `${newHeight}px`;
+    canvas.style.width = '100%';       // Setzt die CSS-Breite auf 100%
+    canvas.style.height = '100%';      // Setzt die CSS-Höhe auf 100%
+    canvas.style.borderRadius = '0';
+    content.style.borderRadius = '0';
   } else {
     // Nicht im Vollbildmodus
-    canvas.style.width = '720px';
-    canvas.style.height = '480px';
+    canvas.style.width = '720px'; // Zurücksetzen auf ursprüngliche CSS-Größe
+    canvas.style.height = '480px'; // Zurücksetzen auf ursprüngliche CSS-Größe
+    canvas.style.borderRadius = '16px';
+    content.style.borderRadius = '16px';
   }
+}
+
+function toggleGamecontrols() {
+  let container = document.getElementById('gamecontrols-container');
+  container.classList.toggle('d-none');
 }
 
 // Event-Listener für Vollbildänderungen
