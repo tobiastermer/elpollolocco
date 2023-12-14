@@ -55,6 +55,6 @@ class BigChicken extends Chicken {
                 }
             }
             
-        }, 100);
+        }, 1000 / 30);
     }
 }

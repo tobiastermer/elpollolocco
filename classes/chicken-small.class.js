@@ -55,6 +55,6 @@ class SmallChicken extends Chicken {
                 }
             }
             
-        }, 100);
+        }, 1000 / 30);
     }
 }
