@@ -4,6 +4,7 @@ class MovableObject extends DrawableObject {
     speedY = 0;
     acceleration = 1.2;
     energy = 100;
+    lastAction = 0;
     lastAttack = 0;
     lastHit = 0;
     lastDead = 0;
@@ -56,14 +57,21 @@ class MovableObject extends DrawableObject {
 
     moveRight(speed) {
         this.x += this.speed;
+        this.setLastAction();
     }
-
 
     moveLeft(speed) {
         this.x -= this.speed;
+        this.setLastAction();
     }
 
     jump() {
+        this.speedY = 22;
+        this.setLastAction();
+    }
+
+    rebounceOnCollision(enemy) {
+        this.y = enemy.y - this.height;
         this.speedY = 22;
     }
 
@@ -93,6 +101,7 @@ class MovableObject extends DrawableObject {
                 this.lastHit = new Date().getTime();
             }
             // console.log(this, ', Energy: ', this.energy);
+            this.setLastAction();
         }
     }
 
@@ -116,6 +125,11 @@ class MovableObject extends DrawableObject {
         return timePassed < 1000;
     }
 
+    isIdling() {
+        let timePassed = new Date().getTime() - this.lastAction; // time since last Hit in milliseconds
+        return timePassed > 2000;  
+    }
+
     isNearToCharacter() {
         return (!this.otherDirection && this.x - world.character.x < 300) || (this.otherDirection && world.character.x - this.x < 300);
     }
@@ -131,5 +145,9 @@ class MovableObject extends DrawableObject {
         this.acceleration = 0.02;
         this.speed = 0;
         this.applyGravity();
+    }
+
+    setLastAction() {
+        this.lastAttack = new Date().getTime();
     }
 }

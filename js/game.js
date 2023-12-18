@@ -7,7 +7,7 @@ let gameIsPaused = false;
 let gameIsWon = false;
 
 function startGame() {
-  clearAllIntervals();
+  clearAllIntervals();  
   initLevel1();
   canvas = document.getElementById('canvas');
   world = new World(canvas, keyboard);
@@ -21,9 +21,12 @@ function startGame() {
   showElement('btn-column-1-2');
   hideElement('btn-column-2-1');
   showElement('btn-column-3-2');
+  showElement('btn-column-2-3')
   showElement('btn-restart');
   gameIsPaused = false;
+  world.keyboard.initializeTouchControls();
   initBackgroundMusic();
+
 }
 
 function pauseGame() {
@@ -78,6 +81,7 @@ function finishGame() {
     hideElement('btn-column-1-2');
     showElement('btn-column-2-1');
     hideElement('btn-column-3-2');
+    hideElement('btn-column-2-3')
     hideElement('btn-restart');
 
   }, 1500);
@@ -155,7 +159,6 @@ function toggleGamecontrols() {
 // Event-Listener für Vollbildänderungen
 document.addEventListener('fullscreenchange', resizeCanvas);
 document.addEventListener('webkitfullscreenchange', resizeCanvas); // Für Safari
-
 
 document.addEventListener('keydown', (e) => {
   if (e.keyCode == 37) {

@@ -16,6 +16,7 @@ class World {
         this.keyboard = keyboard;
         this.setWorld();
         this.setStatusbars();
+        this.setStatusbarsPercentages();
         this.draw();
         this.run();
     }
@@ -29,7 +30,15 @@ class World {
         this.statusbarHealth = statusbar2;
         this.statusbarCoins = statusbar3;
         this.statusbarEndboss = statusbar4;
+        this.statusbarEndboss.isVisible = false;
         this.statusbarEndbossIcon = new FixedImage(650, 6, 63, 63, './img/7_statusbars/3_icons/icon_health_endboss.png', false);
+    }
+
+    setStatusbarsPercentages() {
+        this.statusbarBottles.setPercentage(0);
+        this.statusbarHealth.setPercentage(100);
+        this.statusbarCoins.setPercentage(0);
+        this.statusbarEndboss.setPercentage(100);
     }
 
     run() {
@@ -64,6 +73,9 @@ class World {
             if (this.character.isColliding(enemy) && !enemy.isDead() && !this.character.isDead()) {
                 if (this.character.isAboveGround() && this.character.isFallingDown() && enemy instanceof Chicken) {
                     enemy.hit(this.character.damageToOthers)
+                    if (enemy.isDead()) {
+                        this.character.rebounceOnCollision(enemy);
+                    }
 
                 } else {
                     this.character.hit(enemy.damageToOthers);
@@ -110,6 +122,7 @@ class World {
             let bottle = new ThrowableObject(this.character.x + 10, this.character.y + 60, this.character.otherDirection, 0, 10);
             this.thrownObjects.push(bottle);
             this.character.collectedBottles -= 1;
+            this.character.setLastAction();
             this.statusbarBottles.setPercentage((this.character.collectedBottles) / this.statusbarBottles.limit * 100);
         }
     }
@@ -141,7 +154,7 @@ class World {
 
             this.ctx.translate(-this.camera_x, 0);
         }
-        
+
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
@@ -201,25 +214,10 @@ class World {
     }
 
     updateCamera() {
-        // const middleOfScreen = this.canvas.width / 2;
-        // const cameraFocusMargin = 100; // Wie weit der Charakter vom Mittelpunkt entfernt sein kann
-
-        // let cameraFocusPoint = this.camera_x + middleOfScreen; // Der Punkt, auf den die Kamera fokussiert
-
-        // // Berechnen der neuen Kameraposition basierend auf der Charakterposition und -richtung
-        // if (this.character.otherDirection) { // Charakter bewegt sich nach links
-        //     if (this.character.x < cameraFocusPoint - cameraFocusMargin) {
-        //         this.camera_x = Math.max(0, this.character.x - (middleOfScreen - cameraFocusMargin));
-        //     }
-        // } else { // Charakter bewegt sich nach rechts
-        //     if (this.character.x + this.character.width > cameraFocusPoint + cameraFocusMargin) {
-        //         this.camera_x = Math.min(this.character.x - (middleOfScreen - cameraFocusMargin), this.level.levelEndX - this.canvas.width);
-        //     }
-        // }
-
-        this.camera_x = -this.character.x + 120;
-
+        if (this.character.world.keyboard.RIGHT || this.character.world.keyboard.LEFT) {
+            const targetCameraX = this.character.otherDirection ? -this.character.x + 500 : -this.character.x + 100;
+            this.camera_x += (targetCameraX - this.camera_x) * 0.05;
+        }
     }
-
 
 }

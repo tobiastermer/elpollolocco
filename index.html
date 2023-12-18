@@ -23,7 +23,6 @@
     <script src="classes/character.class.js"></script>
     <script src="classes/chicken.class.js"></script>
     <script src="classes/chicken-small.class.js"></script>
-    <script src="classes/chicken-big.class.js"></script>
     <script src="classes/endboss.class.js"></script>
     <script src="classes/cloud.class.js"></script>
     <script src="classes/coin.class.js"></script>
@@ -57,8 +56,8 @@
                 <div class="btn-upperRow" id="btn-column-1-1">
                 </div>
                 <div class="btn-lowerRow d-none" id="btn-column-1-2">
-                    <img onclick="startGame()" class="btn" src="./img/10_buttons/left.svg" alt="">
-                    <img onclick="startGame()" class="btn" src="./img/10_buttons/right.svg" alt="">
+                    <img class="btn desktop-hidden" id="btn-left" src="./img/10_buttons/left.svg" alt="">
+                    <img class="btn desktop-hidden" id="btn-right" src="./img/10_buttons/right.svg" alt="">
                 </div>
             </div>
             <div class="btn-column btn-column-mid" id="btn-column-2">
@@ -67,11 +66,16 @@
 
                 </div>
                 <div class="btn-lowerRow" id="btn-column-2-2">
-                    <img onclick="startGame()" class="btn d-none" src="./img/10_buttons/restart.svg" id="btn-restart"
-                        alt="">
                     <img onclick="toggleGamecontrols()" class="btn" src="./img/10_buttons/controller.svg" alt="">
                     <img onclick="toggleMusic()" class="btn" id="btn-music" src="./img/10_buttons/soundon.svg" alt="">
                     <img onclick="toggleFullscreen()" class="btn" src="./img/10_buttons/expand.svg" alt="">
+                </div>
+                <div class="btn-lowerRow d-none" id="btn-column-2-3">
+                    <img onclick="startGame()" class="btn d-none" src="./img/10_buttons/restart.svg" id="btn-restart"
+                        alt="">
+                    <img onclick="pauseGame()" class="btn d-none" id="btn-pause" src="./img/10_buttons/pause.svg"
+                        alt="">
+                    <img onclick="resumeGame()" class="btn d-none" id="btn-play" src="./img/10_buttons/play.svg" alt="">
                 </div>
 
 
@@ -82,10 +86,8 @@
 
                 </div>
                 <div class="btn-lowerRow d-none" id="btn-column-3-2">
-                    <img onclick="pauseGame()" class="btn d-none" id="btn-pause" src="./img/10_buttons/pause.svg"
-                        alt="">
-                    <img onclick="resumeGame()" class="btn d-none" id="btn-play" src="./img/10_buttons/play.svg" alt="">
-                    <img onclick="startGame()" class="btn" src="./img/10_buttons/up.svg" alt="">
+                    <img class="btn desktop-hidden" id='btn-throw' src="./img/10_buttons/molotov.svg" alt="">
+                    <img class="btn desktop-hidden" id='btn-jump' src="./img/10_buttons/up.svg" alt="">
                 </div>
             </div>
 

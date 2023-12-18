@@ -29,32 +29,4 @@ class SmallChicken extends Chicken {
         this.animate();
     }
 
-    animate() {
-
-        setInterval(() => {
-
-            if (!gameIsPaused) {
-                if (!this.isDead()) {
-                    this.moveLeft(this.speed);
-                }
-            }
-
-        }, 1000 / 30);
-
-        setInterval(() => {
-
-            if (!gameIsPaused) {
-                if (!this.isDead()) {
-                    this.playAnimation(this.IMAGES_WALKING);
-                } else {
-                    this.playAnimation(this.IMAGES_DEAD);
-                    if (!this.isDeadSoundPlayed) {
-                        playAudio("smallChickenHit")
-                        this.isDeadSoundPlayed = true;
-                    }
-                }
-            }
-            
-        }, 1000 / 30);
-    }
 }

@@ -185,9 +185,7 @@
      justify-content: center;
  }
 
- button {
-     background-color: transparent;
-     border: none;
+ #btn-start {
      color: black;
      font-size: 2.5rem;
      font-family: 'Zabars', sans-serif;
@@ -200,6 +198,13 @@
      border-radius: 8px !important;
      margin-top: 16% !important;
  }
+
+ /* #btn-left {
+    background-image: url(img/10_buttons/left.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+ } */
 
  .btn-column {
      height: calc(100% - 20px);
@@ -238,6 +243,10 @@
 
  .d-none {
      display: none;
+ }
+
+ .desktop-hidden {
+    display: none;
  }
 
  /* Smartphones */
@@ -285,6 +294,8 @@
      .mobile-visible {
          display: block;
      }
+
+
  }
 
  @media only screen and (max-height: 480px) {
@@ -306,5 +317,9 @@
 
      .button-layer {
          height: 100%;
+     }
+
+     .desktop-hidden {
+        display: unset;
      }
  }
