@@ -9,7 +9,6 @@
     <link rel="icon" type="image/x-icon" href="img\2_character_pepe\1_idle\idle\I-2.png">
     <link rel="stylesheet" href="./css/fonts.css">
     <link rel="stylesheet" href="style.css">
-
     <script src="classes/drawable-object.class.js"></script>
     <script src="classes/movable-object.class.js"></script>
     <script src="classes/world.class.js"></script>
@@ -19,7 +18,6 @@
     <script src="statusbars/sb-coins.js"></script>
     <script src="statusbars/sb-bottles.js"></script>
     <script src="statusbars/sb-endboss.js"></script>
-
     <script src="classes/character.class.js"></script>
     <script src="classes/chicken.class.js"></script>
     <script src="classes/chicken-small.class.js"></script>
@@ -37,20 +35,16 @@
 
 <body>
     <h1 class="mobile-hidden">El Pollo Loco</h1>
+
     <div class="content" id="content">
+
         <img class="image-layer" src="./img/9_intro_outro_screens/start/startscreen_2.png" id="screen-start"
             alt="Startscreen">
         <img class="image-layer d-none" src="./img/9_intro_outro_screens/game_over/you lost.png" id="screen-loose"
             alt="Loosescreen">
         <img class="image-layer d-none" src="./img/9_intro_outro_screens/game_over/game over.png" id="screen-win"
             alt="Winscreen">
-        <!-- <div class="button-layer" id="btn-menuoverlay">
-            <div class="btn-column btn-column-mid">
-                <div class="btn-upperRow">
 
-                </div>
-            </div>
-        </div> -->
         <div class="button-layer" id="btn-gameoverlay">
             <div class="btn-column btn-column-left" id="btn-column-1">
                 <div class="btn-upperRow" id="btn-column-1-1">
@@ -77,23 +71,19 @@
                         alt="">
                     <img onclick="resumeGame()" class="btn d-none" id="btn-play" src="./img/10_buttons/play.svg" alt="">
                 </div>
-
-
-
             </div>
             <div class="btn-column btn-column-rigth" id="btn-column-3">
                 <div class="btn-upperRow" id="btn-column-3-1">
-
                 </div>
                 <div class="btn-lowerRow d-none" id="btn-column-3-2">
                     <img class="btn desktop-hidden" id='btn-throw' src="./img/10_buttons/molotov.svg" alt="">
                     <img class="btn desktop-hidden" id='btn-jump' src="./img/10_buttons/up.svg" alt="">
                 </div>
             </div>
-
-
         </div>
+
         <canvas width="720" height="480" id="canvas" class="d-none"></canvas>
+
         <div id="gamecontrols-container" class="d-none">
             <img src="img/10_buttons/close.svg" onclick="toggleGamecontrols(); return false" alt=""
                 id="btn-closeGamecontrols">
@@ -116,15 +106,13 @@
                 </div>
             </div>
         </div>
+
     </div>
 
     <div id="rotate-device-container">
         <img class="image-layer" src="./img/9_intro_outro_screens/rotatescreen.png" id="screen-rotateDevice"
             alt="Rotatescreen">
     </div>
-
-
-    <!-- <img src="./img/5_background/display.png" alt="" class="monitor"> -->
 
 </body>
 

@@ -1,3 +1,7 @@
+/**
+ * Represents a drawable object in the game.
+ * This class provides basic functionality for loading and drawing images.
+ */
 class DrawableObject {
 
     x;
@@ -12,15 +16,21 @@ class DrawableObject {
     currentImage = 0;
     otherDirection = false;
     rotatedDeg = 0;
-
-
     isVisible = true;
 
+    /**
+     * Loads an image from a given path.
+     * @param {string} path - The path to the image file.
+     */
     loadImage(path) {
         this.img = new Image();
         this.img.src = path;
     }
 
+    /**
+     * Loads multiple images from an array of paths.
+     * @param {string[]} arr - An array of image file paths.
+     */
     loadImages(arr) {
         arr.forEach((path) => {
             let img = new Image();
@@ -29,10 +39,18 @@ class DrawableObject {
         })
     }
 
+    /**
+     * Draws the object on the canvas.
+     * @param {CanvasRenderingContext2D} ctx - The rendering context to draw to.
+     */
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
+    /**
+     * Draws a rectangle around the object. Used for debugging.
+     * @param {CanvasRenderingContext2D} ctx - The rendering context to draw to.
+     */
     drawRectangle(ctx) {
         if (this instanceof Character || this instanceof Chicken || this instanceof Endboss || this instanceof ThrowableObject || this instanceof Coin) {
             ctx.beginPath();
@@ -42,7 +60,5 @@ class DrawableObject {
             ctx.stroke();
         }
     }
-
-
 
 }

@@ -1,3 +1,7 @@
+/**
+ * Represents the main character in the game.
+ * This class handles the character's animations, movements, and actions.
+ */
 class Character extends MovableObject {
 
     world;
@@ -88,11 +92,17 @@ class Character extends MovableObject {
         this.animate();
     }
 
+    /**
+     * Sets intervals for character movement and animation.
+     */
     animate() {
         setInterval(() => this.moveCharacter(), 1000 / 30);
-        setInterval(() => this.playCharacter(), 1000 / 30);
+        setInterval(() => this.playCharacter(), 100);
     }
 
+    /**
+     * Handles the character's movement based on keyboard input.
+    */
     moveCharacter() {
         if (!gameIsPaused && !this.isDead()) {
             if (this.canMoveRight()) {
@@ -107,6 +117,9 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Controls the character's animations based on their current state and actions.
+    */
     playCharacter() {
         if (!gameIsPaused) {
             if (this.isDead()) {
@@ -125,10 +138,17 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Checks if the character can move to the right.
+     * @returns {boolean} True if the character can move right, false otherwise.
+     */
     canMoveRight() {
         return this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX;
     }
 
+    /**
+     * Moves the character to the right.
+     */
     moveRight() {
         super.moveRight();
         this.otherDirection = false;
@@ -136,10 +156,17 @@ class Character extends MovableObject {
         playAudio("characterWalking");
     }
 
+    /**
+     * Checks if the character can move to the left.
+     * @returns {boolean} True if the character can move left, false otherwise.
+     */
     canMoveLeft() {
         return this.world.keyboard.LEFT && this.x > 0;
     }
 
+    /**
+     * Moves the character to the left.
+     */
     moveLeft() {
         super.moveLeft();
         this.otherDirection = true;
@@ -147,47 +174,76 @@ class Character extends MovableObject {
         playAudio("characterWalking");
     }
 
+    /**
+     * Checks if the character is currently walking.
+     * @returns {boolean} True if the character is walking, false otherwise.
+     */
     isWalking() {
         return this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
     }
 
+    /**
+     * Plays the walking animation for the character.
+     */
     playWalking() {
         this.playAnimation(this.IMAGES_WALKING);
     }
 
+    /**
+     * Checks if the character can jump.
+     * @returns {boolean} True if the character can jump, false otherwise.
+     */
     canJump() {
         return this.world.keyboard.SPACE && !this.isAboveGround();
     }
 
+    /**
+     * Makes the character jump.
+     */
     jump() {
         super.jump();
         this.lastAction = new Date().getTime();
         playAudio("characterJump");
     }
 
+    /**
+     * Plays the jumping animation for the character.
+     */
     playJump() {
         this.playAnimation(this.IMAGES_JUMPING);
         pauseAudio("characterWalking");
     }
 
+    /**
+     * Plays the death animation and sound for the character.
+     */
     playDead() {
         this.playAnimationStopLastImg(this.IMAGES_DEAD);
         playAudio("characterDies");
         playAudio("gameLost");
     }
 
+    /**
+     * Plays the hurt animation and sound for the character.
+     */
     playHurt() {
         this.playAnimation(this.IMAGES_HURT);
         playAudio("characterGetHurt");
         pauseAudio("characterWalking");
     }
 
+    /**
+     * Plays the long idling animation and sound for the character.
+     */
     playLongIdling() {
         this.playAnimation(this.IMAGES_LONGIDLE);
         pauseAudio("characterWalking");
         playAudio("characterSleeps");
     }
 
+    /**
+     * Plays the idling animation for the character.
+     */
     playIdling() {
         this.playAnimation(this.IMAGES_IDLE);
         pauseAudio("characterWalking");

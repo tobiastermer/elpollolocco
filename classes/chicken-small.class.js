@@ -1,3 +1,6 @@
+/**
+ * Represents small chickens in the game.
+ */
 class SmallChicken extends Chicken {
 
     IMAGES_WALKING = [

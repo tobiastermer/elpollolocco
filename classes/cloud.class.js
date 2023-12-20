@@ -1,3 +1,6 @@
+/**
+ * Represents a cloud in the game.
+ */
 class Cloud extends MovableObject {
 
     y = 0;
@@ -13,13 +16,13 @@ class Cloud extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+        setInterval(() => this.moveCloud(), 1000 / 30);
+    }
 
-            if (!gameIsPaused) {
-                this.moveLeft(this.speed);
-            }
-
-        }, 1000 / 30);
+    moveCloud() {
+        if (!gameIsPaused) {
+            this.moveLeft(this.speed);
+        }
     }
 
 }

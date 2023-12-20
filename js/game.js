@@ -6,39 +6,58 @@ let intervalIDs = [];
 let gameIsPaused = false;
 let gameIsWon = false;
 
+/**
+ * Starts the game by initializing game elements and setting up the UI.
+ */
 function startGame() {
-  clearAllIntervals();  
+  initGame();
+  setCanvasAndWorld();
+  configureGameUI();
+  initBackgroundMusic();
+}
+
+/**
+ * Initializes the game by clearing intervals and setting initial game state.
+ */
+function initGame() {
+  clearAllIntervals();
   initLevel1();
+  gameIsPaused = false;
+}
+
+/**
+ * Sets up the canvas and world objects for the game.
+ */
+function setCanvasAndWorld() {
   canvas = document.getElementById('canvas');
   world = new World(canvas, keyboard);
-  hideElement('screen-start');
-  hideElement('screen-loose');
-  hideElement('screen-win');
-  hideElement('btn-start');
-  showElement('canvas');
-  showElement('btn-pause');
-  hideElement('btn-play');
-  showElement('btn-column-1-2');
-  hideElement('btn-column-2-1');
-  showElement('btn-column-3-2');
-  showElement('btn-column-2-3')
-  showElement('btn-restart');
-  gameIsPaused = false;
-  world.keyboard.initializeTouchControls();
-  initBackgroundMusic();
-
 }
 
+/**
+ * Configures the game user interface.
+ */
+function configureGameUI() {
+  toggleScreensAndButtons(['screen-start', 'screen-loose', 'screen-win', 'btn-start', 'btn-play', 'btn-column-2-1'], false);
+  toggleScreensAndButtons(['canvas', 'btn-pause', 'btn-column-1-2', 'btn-column-3-2', 'btn-column-2-3', 'btn-restart'], true);
+  world.keyboard.initTouchControls();
+}
+
+/**
+ * Pauses the game.
+ */
 function pauseGame() {
   gameIsPaused = true;
-  showElement('btn-play');
-  hideElement('btn-pause');
+  toggleScreensAndButtons(['btn-play'], true);
+  toggleScreensAndButtons(['btn-pause'], false);
 }
 
+/**
+ * Resumes the game from a paused state.
+ */
 function resumeGame() {
   gameIsPaused = false;
-  hideElement('btn-play');
-  showElement('btn-pause');
+  toggleScreensAndButtons(['btn-play'], false);
+  toggleScreensAndButtons(['btn-pause'], true);
 }
 
 /**
@@ -52,78 +71,88 @@ function initBackgroundMusic() {
   }
 }
 
+/**
+ * Handles the event when the game is won.
+ */
 function wonGame() {
   gameIsWon = true;
   finishGame();
 }
 
+/**
+ * Handles the event when the game is lost.
+ */
 function lostGame() {
   gameIsWon = false;
   finishGame();
 }
 
+/**
+ * Finalizes the game and shows the appropriate end screen.
+ */
 function finishGame() {
-
   setTimeout(() => {
     pauseGame();
-    if (gameIsWon) {
-      showElement('screen-win');
-    } else {
-      showElement('screen-loose');
-    }
-    document.getElementById('btn-pause').classList.add('d-none');
-    gameIsPaused = true;
-
-    // showElement('screen-start');
-    showElement('btn-start');
-    // hideElement('canvas');
-    hideElement('btn-pause');
-    hideElement('btn-column-1-2');
-    showElement('btn-column-2-1');
-    hideElement('btn-column-3-2');
-    hideElement('btn-column-2-3')
-    hideElement('btn-restart');
-
+    toggleScreensAndButtons(['screen-win', 'btn-start'], gameIsWon);
+    toggleScreensAndButtons(['screen-loose'], !gameIsWon);
+    configureEndGameUI();
   }, 1500);
-
 }
 
+/**
+ * Configures the user interface elements for the end of the game.
+ */
+function configureEndGameUI() {
+  toggleScreensAndButtons(['btn-pause', 'btn-column-1-2', 'btn-column-3-2', 'btn-column-2-3', 'btn-restart'], false);
+  toggleScreensAndButtons(['btn-column-2-1', 'btn-start'], true);
+}
+
+/**
+ * Clears all intervals that have been set.
+ */
 function clearAllIntervals() {
   for (let i = 1; i < 9999; i++) window.clearInterval(i);
 }
 
-function showElement(element) {
-  // document.getElementById('image-layer').classList.remove('d-none');
-  document.getElementById(element).classList.remove('d-none');
+/**
+ * Toggles the visibility of specified screen elements and buttons.
+ * @param {string[]} elements - Array of element IDs to toggle.
+ * @param {boolean} show - Whether to show or hide the elements.
+ */
+function toggleScreensAndButtons(elements, show) {
+  elements.forEach(element => {
+    const el = document.getElementById(element);
+    if (el) {
+      el.classList.toggle('d-none', !show);
+    }
+  });
 }
 
-function hideElement(element) {
-  // document.getElementById('image-layer').classList.add('d-none');
-  document.getElementById(element).classList.add('d-none');
-}
+/**
+ * Toggles the fullscreen mode of the game.
+ */
 function toggleFullscreen() {
   let fullscreenElement = document.getElementById('content');
-
-  if (!isFullscreen) {
-    enterFullscreen(fullscreenElement);
-  } else {
-    exitFullscreen();
-  }
-
-  isFullscreen = !isFullscreen; // Umschalten des Status
+  isFullscreen ? exitFullscreen() : enterFullscreen(fullscreenElement);
+  isFullscreen = !isFullscreen;
 }
 
+/**
+ * Enters fullscreen mode for a specified element.
+ * @param {HTMLElement} element - The element to display in fullscreen.
+ */
 function enterFullscreen(element) {
   if (element.requestFullscreen) {
     element.requestFullscreen();
-  } else if (element.msRequestFullscreen) {      // for IE11 (remove June 15, 2022)
-    element.msRequestFullscreen();
-  } else if (element.webkitRequestFullscreen) {  // iOS Safari
+  } else if (element.webkitRequestFullscreen) {
     element.webkitRequestFullscreen();
   }
   resizeCanvas();
 }
 
+/**
+ * Exits fullscreen mode.
+ */
 function exitFullscreen() {
   if (document.exitFullscreen) {
     document.exitFullscreen();
@@ -133,59 +162,27 @@ function exitFullscreen() {
   resizeCanvas();
 }
 
+/**
+ * Resizes the canvas when toggling fullscreen mode.
+ */
 function resizeCanvas() {
   let canvas = document.getElementById('canvas');
   let content = document.getElementById('content');
-  if (document.fullscreenElement || document.webkitFullscreenElement) {
-    // Im Vollbildmodus
-    canvas.style.width = '100%';       // Setzt die CSS-Breite auf 100%
-    canvas.style.height = '100%';      // Setzt die CSS-Höhe auf 100%
-    canvas.style.borderRadius = '0';
-    content.style.borderRadius = '0';
-  } else {
-    // Nicht im Vollbildmodus
-    canvas.style.width = '720px'; // Zurücksetzen auf ursprüngliche CSS-Größe
-    canvas.style.height = '480px'; // Zurücksetzen auf ursprüngliche CSS-Größe
-    canvas.style.borderRadius = '16px';
-    content.style.borderRadius = '16px';
-  }
+  const isFullScreen = document.fullscreenElement || document.webkitFullscreenElement;
+
+  canvas.style.width = isFullScreen ? '100%' : '720px';
+  canvas.style.height = isFullScreen ? '100%' : '480px';
+  canvas.style.borderRadius = isFullScreen ? '0' : '16px';
+  content.style.borderRadius = isFullScreen ? '0' : '16px';
 }
 
+/**
+ * Toggles the visibility of the game controls.
+ */
 function toggleGamecontrols() {
-  let container = document.getElementById('gamecontrols-container');
-  container.classList.toggle('d-none');
+  document.getElementById('gamecontrols-container').classList.toggle('d-none');
 }
 
-// Event-Listener für Vollbildänderungen
+// Event listeners for fullscreen changes
 document.addEventListener('fullscreenchange', resizeCanvas);
 document.addEventListener('webkitfullscreenchange', resizeCanvas); // Für Safari
-
-document.addEventListener('keydown', (e) => {
-  if (e.keyCode == 37) {
-    keyboard.LEFT = true;
-  }
-  if (e.keyCode == 39) {
-    keyboard.RIGHT = true;
-  }
-  if (e.keyCode == 32) {
-    keyboard.SPACE = true;
-  }
-  if (e.keyCode == 68) {
-    keyboard.THROW = true;
-  }
-});
-
-document.addEventListener('keyup', (e) => {
-  if (e.keyCode == 37) {
-    keyboard.LEFT = false;
-  }
-  if (e.keyCode == 39) {
-    keyboard.RIGHT = false;
-  }
-  if (e.keyCode == 32) {
-    keyboard.SPACE = false;
-  }
-  if (e.keyCode == 68) {
-    keyboard.THROW = false;
-  }
-});

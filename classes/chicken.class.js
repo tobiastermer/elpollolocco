@@ -1,3 +1,6 @@
+/**
+ * Represents chickens in the game.
+ */
 class Chicken extends MovableObject {
 
     IMAGES_WALKING = [
@@ -27,28 +30,33 @@ class Chicken extends MovableObject {
         this.animate();
     }
 
+    /**
+     * Sets intervals for chicken movement and animation.
+     */
     animate() {
+        setInterval(() => this.moveChicken(), 1000 / 30);
+        setInterval(() => this.playChicken(), 100);
+    }
 
-        setInterval(() => {
+    /**
+     * Handles the chicken's movement.
+    */
+    moveChicken() {
+        if (!gameIsPaused && !this.isDead()) {
+            this.moveLeft(this.speed);
+        }
+    }
 
-            if (!gameIsPaused) {
-                if (!this.isDead()) {
-                    this.moveLeft(this.speed);
-                }
+    /**
+     * Plays the chicken animation for walk or dead.
+     */
+    playChicken() {
+        if (!gameIsPaused) {
+            if (!this.isDead()) {
+                this.playAnimation(this.IMAGES_WALKING);
+            } else {
+                this.playAnimation(this.IMAGES_DEAD);
             }
-
-        }, 1000 / 30);
-
-        setInterval(() => {
-
-            if (!gameIsPaused) {
-                if (!this.isDead()) {
-                    this.playAnimation(this.IMAGES_WALKING);
-                } else {
-                    this.playAnimation(this.IMAGES_DEAD);
-                }
-            }
-            
-        }, 1000 / 30);
+        }
     }
 }

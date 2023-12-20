@@ -1,6 +1,9 @@
+/**
+ * Represents a throwable object in the game, such as a bottle.
+ * This class extends MovableObject and includes specific animations and behaviors for throwable objects.
+ * @extends MovableObject
+ */
 class ThrowableObject extends MovableObject {
-
-    isSplashed = false;
 
     IMAGES_ONGROUND = [
         './img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
@@ -23,10 +26,10 @@ class ThrowableObject extends MovableObject {
         './img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
     ];
 
-    isThrownAudioPlayed = false;
+    isSplashed = false;
     isSplashedAudioPlayed = false;
+    isThrownAudioPlayed = false;
     soundCollected = 'bottleCollect';
-
 
     constructor(x, y, otherDirection, imgIndex, damageToOthers) {
         super().loadImages(this.IMAGES_ONGROUND);
@@ -38,7 +41,7 @@ class ThrowableObject extends MovableObject {
         this.offsetX = 25;
         this.offsetYtop = 15;
         this.offsetYbottom = 10;
-        this.speed = 0;
+        this.speed = 20;
         this.speedY = 15;
         this.damageToOthers = damageToOthers;
         this.otherDirection = otherDirection;
@@ -50,35 +53,57 @@ class ThrowableObject extends MovableObject {
         }
     }
 
+    /**
+    * Initiates the throwing action of the object.
+    */
     throw() {
         this.applyGravity();
         setInterval(() => {
             if (!gameIsPaused) {
-
                 if (this.isSplashed) {
-                    this.playAnimation(this.IMAGES_SPLASH);
-                    this.damageToOthers = 0;
-                    if (!this.isSplashedSoundPlayed) {
-                        playAudioMultiple("bottleSplash");
-                        this.isSplashedSoundPlayed = true;
-                    }
+                    this.splash();
                 } else if (this.otherDirection) {
-                    this.x -= 20;
-                    this.playAnimation(this.IMAGES_ROTATING);
-                    if (!this.isThrownSoundPlayed) {
-                        playAudioMultiple("bottleThrow");
-                        this.isThrownSoundPlayed = true;
-                    }
+                    this.throwLeft();
                 } else {
-                    this.x += 20;
-                    this.playAnimation(this.IMAGES_ROTATING);
-                    if (!this.isThrownSoundPlayed) {
-                        playAudioMultiple("bottleThrow");
-                        this.isThrownSoundPlayed = true;
-                    }
+                    this.throwRight();
                 }
             }
         }, 1000 / 30);
     }
 
+    /**
+     * Handles the splash animation and sound when the object hits a target.
+     */
+    splash() {
+        this.playAnimation(this.IMAGES_SPLASH);
+        this.damageToOthers = 0;
+        if (!this.isSplashedSoundPlayed) {
+            playAudioMultiple("bottleSplash");
+            this.isSplashedSoundPlayed = true;
+        }
+    }
+
+    /**
+     * Handles the movement and animation when the object is thrown to the left.
+     */
+    throwLeft() {
+        this.moveLeft(this.speed);
+        this.playAnimation(this.IMAGES_ROTATING);
+        if (!this.isThrownSoundPlayed) {
+            playAudioMultiple("bottleThrow");
+            this.isThrownSoundPlayed = true;
+        }
+    }
+
+    /**
+     * Handles the movement and animation when the object is thrown to the right.
+     */
+    throwRight() {
+        this.moveRight(this.speed);
+        this.playAnimation(this.IMAGES_ROTATING);
+        if (!this.isThrownSoundPlayed) {
+            playAudioMultiple("bottleThrow");
+            this.isThrownSoundPlayed = true;
+        }
+    }
 }

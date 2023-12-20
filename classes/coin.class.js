@@ -1,3 +1,6 @@
+/**
+ * Represents a coin in the game.
+ */
 class Coin extends MovableObject {
 
     IMAGES_WALKING = [
@@ -22,15 +25,11 @@ class Coin extends MovableObject {
     }
 
     animate() {
-
-        this.moveLeft(this.speed);
-
         setInterval(() => {
             if (!gameIsPaused) {
                 this.playAnimation(this.IMAGES_WALKING);
             }
         }, 100)
     }
-
 
 }

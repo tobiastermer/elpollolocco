@@ -1,3 +1,7 @@
+/**
+ * Represents the Endboss character in the game.
+ * This class extends MovableObject and includes specific animations and behaviors for the Endboss.
+ */
 class Endboss extends MovableObject {
 
     IMAGES_WALKING = [
@@ -62,48 +66,96 @@ class Endboss extends MovableObject {
         this.animate();
     }
 
+    /**
+     * Sets intervals for Endboss actions and animations.
+     */
     animate() {
-
-        // wird gebraucht, damit der Endboss nicht zu ruckartig seine Richtung verändert
-        setInterval(() => {
-            if (world.character.x > this.x) {
-                this.otherDirection = true;
-            } else {
-                this.otherDirection = false;
-            }
-        }, 1500);
-
-        setInterval(() => {
-            if (!gameIsPaused) {
-                if (this.isDead()) {
-                    // this.x += 1;                
-                } else if (this.otherDirection) {
-                    this.moveRight(this.speed);
-                } else {
-                    this.moveLeft(this.speed);
-                }
-            }
-        }, 1000 / 30);
-
-        setInterval(() => {
-            if (!gameIsPaused) {
-                if (this.isDead()) {
-                    this.playAnimationStopLastImg(this.IMAGES_DEAD);
-                    playAudio("endbossDies");
-                    playAudio("gameWon");
-                } else if (this.isHurt()) {
-                    this.playAnimation(this.IMAGES_HURT);
-                    playAudio("endbossHurt");
-                } else if (this.isAttacking()) {
-                    this.playAnimation(this.IMAGES_ATTACK);
-                    playAudio("endbossAttack");
-                } else if (this.isNearToCharacter()) {
-                    this.playAnimation(this.IMAGES_ALERT);
-                    playAudio("endbossAlert");
-                } else {
-                    this.playAnimation(this.IMAGES_WALKING);
-                }
-            }
-        }, 1000 / 30)
+        setInterval(() => this.chooseDirection(), 1500);
+        setInterval(() => this.moveEndboss(), 1000 / 30);
+        setInterval(() => this.playEndboss(), 100)
     }
+
+    /**
+     * Chooses the direction for the Endboss based on the character's position.
+     */
+    chooseDirection() {
+        if (world.character.x > this.x) {
+            this.otherDirection = true;
+        } else {
+            this.otherDirection = false;
+        }
+    }
+
+    /**
+     * Handles the movement of the Endboss.
+     */
+    moveEndboss() {
+        if (!gameIsPaused && !this.isDead()) {
+            if (this.otherDirection) {
+                this.moveRight(this.speed);
+            } else {
+                this.moveLeft(this.speed);
+            }
+        }
+    }
+
+    /**
+     * Controls the Endboss's animations based on their current state and actions.
+     */
+    playEndboss() {
+        if (!gameIsPaused) {
+            if (this.isDead()) {
+                this.playDead();
+            } else if (this.isHurt()) {
+                this.playHurt();
+            } else if (this.isAttacking()) {
+                this.playAttack();
+            } else if (this.isNearToCharacter()) {
+                this.playAlert();
+            } else {
+                this.playWalking();
+            }
+        }
+    }
+
+    /**
+     * Plays the death animation and sound for the Endboss.
+     */
+    playDead() {
+        this.playAnimationStopLastImg(this.IMAGES_DEAD);
+        playAudio("endbossDies");
+        playAudio("gameWon");
+    }
+
+    /**
+     * Plays the hurt animation and sound for the Endboss.
+     */
+    playHurt() {
+        this.playAnimation(this.IMAGES_HURT);
+        playAudio("endbossHurt");
+    }
+
+    /**
+     * Plays the attack animation for the Endboss.
+     */
+    playAttack() {
+        this.playAnimation(this.IMAGES_ATTACK);
+        playAudio("endbossAttack");
+    }
+
+    /**
+     * Plays the alert animation for the Endboss.
+     */
+    playAlert() {
+        this.playAnimation(this.IMAGES_ALERT);
+        playAudio("endbossAlert");
+    }
+
+    /**
+     * Plays the walking animation for the Endboss.
+     */
+    playWalking() {
+        this.playAnimation(this.IMAGES_WALKING);
+    }
+
 }
