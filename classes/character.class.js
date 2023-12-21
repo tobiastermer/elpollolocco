@@ -78,7 +78,7 @@ class Character extends MovableObject {
         this.offsetX = 20;
         this.offsetYtop = 90;
         this.offsetYbottom = 10;
-        this.speed = 10;
+        this.speed = 5;
         this.damageToOthers = 10;
         this.rotatedDeg = 0;
         this.lastAction = new Date().getTime();
@@ -96,7 +96,7 @@ class Character extends MovableObject {
      * Sets intervals for character movement and animation.
      */
     animate() {
-        setInterval(() => this.moveCharacter(), 1000 / 30);
+        setInterval(() => this.moveCharacter(), 1000 / 60);
         setInterval(() => this.playCharacter(), 100);
     }
 

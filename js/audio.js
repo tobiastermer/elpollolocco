@@ -167,11 +167,12 @@ function playAudio(audioName) {
                 audio.audioElement = new Audio(audio.src);
                 audio.audioElement.loop = audio.loop;
             }
-            // Set the volume based on the isMuted variable right before playing the sound
             audio.audioElement.volume = isMuted ? 0.0 : audio.volume;
             audio.audioElement.removeEventListener("ended", onAudioEnded);
             audio.audioElement.addEventListener("ended", onAudioEnded);
-            audio.audioElement.play();
+            audio.audioElement.play().catch(e => {
+                console.error("Error playing audio:", e);
+            });
         }
     }
 }
@@ -185,13 +186,18 @@ function playAudioMultiple(audioName) {
     if (audioConfig) {
         const audio = new Audio(audioConfig.src);
         audio.loop = audioConfig.loop;
-        // Set the volume based on the isMuted variable
         audio.volume = isMuted ? 0.0 : audioConfig.volume;
-        audio.addEventListener("ended", function() {
-            this.currentTime = 0;
-            this.pause();
+        audio.addEventListener("ended", function () {
+            setTimeout(() => {
+                this.currentTime = 0;
+                this.pause();
+            }, 100);
         });
-        audio.play();
+
+        // Spielen Sie das Audio ab und fangen Sie mögliche Fehler ab
+        audio.play().catch(e => {
+            console.error("Error playing audio:", e);
+        });
     }
 }
 
@@ -199,8 +205,10 @@ function playAudioMultiple(audioName) {
  * Resets the audio playback to the start and pauses it.
  */
 function onAudioEnded() {
-    this.currentTime = 0;
-    this.pause();
+    setTimeout(() => {
+        this.currentTime = 0;
+        this.pause();
+    }, 100);
 }
 
 /**
@@ -210,8 +218,10 @@ function onAudioEnded() {
 function pauseAudio(audioName) {
     const audio = audios.find((a) => a.audioName === audioName);
     if (audio && audio.audioElement) {
-        audio.audioElement.pause();
-        audio.audioElement.currentTime = 0;
+        setTimeout(() => {
+            audio.audioElement.pause();
+            audio.audioElement.currentTime = 0;
+        }, 100);
     }
 }
 
@@ -241,26 +251,6 @@ function muteAudio(audio) {
 function unmuteAudio(audio) {
     if (audio && audio.audioElement) {
         audio.audioElement.volume = 0.4;
-    }
-}
-
-/**
- * Resets the audio and pauses it when it ends.
- */
-function onAudioEnded() {
-    this.currentTime = 0;
-    this.pause();
-}
-
-/**
- * Pauses an audio by its name and resets its current time.
- * @param {string} audioName - The name of the audio to pause.
- */
-function pauseAudio(audioName) {
-    const audio = getAudioByName(audioName);
-    if (audio && audio.audioElement) {
-        audio.audioElement.pause();
-        audio.audioElement.currentTime = 0;
     }
 }
 

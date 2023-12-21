@@ -25,6 +25,7 @@ class World {
         this.setWorldToCharacterClass();
         this.setStatusbars();
         this.setStatusbarsPercentages();
+        this.ctx.imageSmoothingEnabled = false
         this.draw();
         this.runGameLoop();
     }
@@ -374,8 +375,9 @@ class World {
     updateCamera() {
         if (this.character.world.keyboard.RIGHT || this.character.world.keyboard.LEFT) {
             const targetCameraX = this.character.otherDirection ? -this.character.x + 500 : -this.character.x + 100;
-            this.camera_x += (targetCameraX - this.camera_x) * 0.05;
+            this.camera_x += Math.round((targetCameraX - this.camera_x) * 0.05);
         }
+        // this.camera_x = -this.character.x + 120;
     }
 
 }

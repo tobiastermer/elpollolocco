@@ -13,7 +13,7 @@ class SmallChicken extends Chicken {
         './img/3_enemies_chicken/chicken_small/2_dead/dead.png',
     ];
 
-    isDeadAudioPlayed = false;
+    soundDead = 'smallChickenHit';
 
     constructor() {
         super().loadImage('./img/3_enemies_chicken/chicken_small/1_walk/1_w.png');

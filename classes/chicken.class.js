@@ -13,6 +13,9 @@ class Chicken extends MovableObject {
         './img/3_enemies_chicken/chicken_normal/2_dead/dead.png',
     ];
 
+    isDeadAudioPlayed = false;
+    soundDead = 'chickenHit';
+
     constructor() {
         super().loadImage('./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.x = 500 + Math.random() * 2500;
@@ -56,6 +59,10 @@ class Chicken extends MovableObject {
                 this.playAnimation(this.IMAGES_WALKING);
             } else {
                 this.playAnimation(this.IMAGES_DEAD);
+                if (!this.isDeadSoundPlayed) {
+                    playAudio(this.soundDead);
+                    this.isDeadSoundPlayed = true;
+                }
             }
         }
     }
