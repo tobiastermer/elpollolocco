@@ -22,7 +22,11 @@ class MovableObject extends DrawableObject {
         setInterval(() => {
             if (!gameIsPaused) {
                 if (this.isAboveGround() || this.speedY > 0) {
-                    this.y = this.y -= this.speedY;
+                    if (this instanceof Character) {
+                        this.y = Math.min(this.y -= this.speedY, 175);
+                    } else {
+                        this.y = this.y -= this.speedY;
+                    }
                     this.speedY -= this.acceleration;
                 }
             }

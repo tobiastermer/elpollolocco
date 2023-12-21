@@ -186,3 +186,14 @@ function toggleGamecontrols() {
 // Event listeners for fullscreen changes
 document.addEventListener('fullscreenchange', resizeCanvas);
 document.addEventListener('webkitfullscreenchange', resizeCanvas); // Für Safari
+
+// Event listener for orientationchange of device
+window.addEventListener("orientationchange", function() {
+  if (window.orientation === 0 || window.orientation === 180) {
+      // Gerät steht hochkant
+      pauseGame();
+  } else {
+      // Gerät ist im Querformat
+      resumeGame();
+  }
+});

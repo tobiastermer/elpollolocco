@@ -65,11 +65,11 @@ class World {
         setInterval(() => {
             if (!gameIsPaused) {
                 this.checkThrowableObjects();
-                this.checkEndbossVisibility();
             }
-        }, 200);
+        }, 500);
         setInterval(() => {
             if (!gameIsPaused) {
+                this.checkEndbossVisibility();
                 this.checkCollisions();
             }
         }, 1000 / 30);

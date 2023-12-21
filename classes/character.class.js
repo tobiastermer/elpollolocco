@@ -219,6 +219,7 @@ class Character extends MovableObject {
      */
     playDead() {
         this.playAnimationStopLastImg(this.IMAGES_DEAD);
+        pauseAudio("characterWalking");
         playAudio("characterDies");
         playAudio("gameLost");
     }
@@ -228,8 +229,8 @@ class Character extends MovableObject {
      */
     playHurt() {
         this.playAnimation(this.IMAGES_HURT);
-        playAudio("characterGetHurt");
         pauseAudio("characterWalking");
+        playAudio("characterGetHurt");
     }
 
     /**
