@@ -7,6 +7,7 @@ class Character extends MovableObject {
     world;
     collectedCoins = 0;
     collectedBottles = 0;
+    lastThrow = 0;
 
     IMAGES_WALKING = [
         './img/2_character_pepe/2_walk/W-21.png',
@@ -250,4 +251,20 @@ class Character extends MovableObject {
         pauseAudio("characterWalking");
     }
 
+    /**
+     * Checks if the character can throw a bottle.
+     * The character can throw a bottle if they have collected bottles and a certain amount of time has passed since the last throw.
+     * @returns {boolean} True if the character can throw a bottle, false otherwise.
+     */
+    canThrowBottle() {
+        let timePassed = new Date().getTime() - this.lastThrow
+        return this.collectedBottles > 0 && timePassed > 500
+    }
+
+    /**
+     * Sets the last time a bottle was thrown to the current time.
+     */
+    setLastThrow() {
+        this.lastThrow = new Date().getTime();
+    }
 }

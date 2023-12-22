@@ -67,7 +67,7 @@ class World {
             if (!gameIsPaused) {
                 this.checkThrowableObjects();
             }
-        }, 500);
+        }, 1000 / 30);
         setInterval(() => {
             if (!gameIsPaused) {
                 this.checkEndbossVisibility();
@@ -204,11 +204,12 @@ class World {
      * Checks and handles the throwing of objects by the character.
      */
     checkThrowableObjects() {
-        if (this.keyboard.THROW && this.character.collectedBottles > 0) {
+        if (this.keyboard.THROW && this.character.canThrowBottle()) {
             let bottle = new ThrowableObject(this.character.x + 10, this.character.y + 60, this.character.otherDirection, 0, 10);
             this.thrownObjects.push(bottle);
             this.character.collectedBottles -= 1;
             this.character.setLastAction();
+            this.character.setLastThrow();
             this.statusbarBottles.setPercentage((this.character.collectedBottles) / this.statusbarBottles.limit * 100);
         }
     }

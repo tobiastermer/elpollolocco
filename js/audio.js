@@ -156,23 +156,32 @@ let audios = [
 let isMuted = false;
 
 function playAudio(audioName) {
-    const audio = audios.find((a) => a.audioName === audioName);
+    const audioConfig = audios.find((a) => a.audioName === audioName);
 
-    if (audio && !audio.isPlaying) {
-        if (!audio.audioElement || audio.audioElement.paused || audio.audioElement.ended) {
-            if (audio.audioElement) {
-                audio.audioElement.pause();
-                audio.audioElement.currentTime = 0;
-            } else {
-                audio.audioElement = new Audio(audio.src);
-                audio.audioElement.loop = audio.loop;
+    if (audioConfig) {
+        if (!audioConfig.audioElement) {
+            audioConfig.audioElement = new Audio(audioConfig.src);
+            audioConfig.audioElement.loop = audioConfig.loop;
+            audioConfig.audioElement.volume = isMuted ? 0.0 : audioConfig.volume;
+            audioConfig.audioElement.addEventListener("ended", onAudioEnded);
+        }
+
+        if (audioConfig.audioElement.paused || audioConfig.audioElement.ended) {
+            if (!audioConfig.isStarting) {
+                audioConfig.isStarting = true;
+                let playPromise = audioConfig.audioElement.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        audioConfig.isPlaying = true;
+                        audioConfig.isStarting = false;
+                    })
+                    .catch(error => {
+                        audioConfig.isStarting = false;
+                        console.error("Error playing audio:", error);
+                    });
+                }
             }
-            audio.audioElement.volume = isMuted ? 0.0 : audio.volume;
-            audio.audioElement.removeEventListener("ended", onAudioEnded);
-            audio.audioElement.addEventListener("ended", onAudioEnded);
-            audio.audioElement.play().catch(e => {
-                console.error("Error playing audio:", e);
-            });
         }
     }
 }
@@ -188,16 +197,21 @@ function playAudioMultiple(audioName) {
         audio.loop = audioConfig.loop;
         audio.volume = isMuted ? 0.0 : audioConfig.volume;
         audio.addEventListener("ended", function () {
-            setTimeout(() => {
-                this.currentTime = 0;
-                this.pause();
-            }, 100);
+            this.currentTime = 0;
+            this.pause();
         });
 
-        // Spielen Sie das Audio ab und fangen Sie mögliche Fehler ab
-        audio.play().catch(e => {
-            console.error("Error playing audio:", e);
-        });
+        let playPromise = audio.play();
+
+        if (playPromise !== undefined) {
+            playPromise.then(_ => {
+                // Audio playback started successfully
+            })
+            .catch(error => {
+                // Auto-play was prevented
+                console.error("Error playing audio:", error);
+            });
+        }
     }
 }
 
@@ -216,12 +230,11 @@ function onAudioEnded() {
  * @param {string} audioName - The name of the audio to pause.
  */
 function pauseAudio(audioName) {
-    const audio = audios.find((a) => a.audioName === audioName);
-    if (audio && audio.audioElement) {
-        setTimeout(() => {
-            audio.audioElement.pause();
-            audio.audioElement.currentTime = 0;
-        }, 100);
+    const audioConfig = audios.find((a) => a.audioName === audioName);
+    if (audioConfig && audioConfig.audioElement && audioConfig.isPlaying) {
+        audioConfig.isPlaying = false;
+        audioConfig.audioElement.pause();
+        audioConfig.audioElement.currentTime = 0;
     }
 }
 
