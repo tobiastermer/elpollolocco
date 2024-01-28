@@ -176,10 +176,10 @@ function playAudio(audioName) {
                         audioConfig.isPlaying = true;
                         audioConfig.isStarting = false;
                     })
-                    .catch(error => {
-                        audioConfig.isStarting = false;
-                        console.error("Error playing audio:", error);
-                    });
+                        .catch(error => {
+                            audioConfig.isStarting = false;
+                            console.error("Error playing audio:", error);
+                        });
                 }
             }
         }
@@ -207,10 +207,10 @@ function playAudioMultiple(audioName) {
             playPromise.then(_ => {
                 // Audio playback started successfully
             })
-            .catch(error => {
-                // Auto-play was prevented
-                console.error("Error playing audio:", error);
-            });
+                .catch(error => {
+                    // Auto-play was prevented
+                    console.error("Error playing audio:", error);
+                });
         }
     }
 }
@@ -219,10 +219,8 @@ function playAudioMultiple(audioName) {
  * Resets the audio playback to the start and pauses it.
  */
 function onAudioEnded() {
-    setTimeout(() => {
-        this.currentTime = 0;
-        this.pause();
-    }, 100);
+    this.currentTime = 0;
+    this.pause();
 }
 
 /**

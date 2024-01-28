@@ -171,7 +171,7 @@
 
  .btn {
      height: 100%;
-     width: fit-content;
+     /* width: fit-content; causes problems in firefox */
      border-radius: 50%;
      background-color: rgb(255, 204, 24);
      padding: 8px;
@@ -209,7 +209,6 @@
  .desktop-hidden {
     display: none;
  }
-
  
  @keyframes icon-animation {
 
